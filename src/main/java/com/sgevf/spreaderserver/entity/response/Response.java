@@ -1,6 +1,8 @@
 package com.sgevf.spreaderserver.entity.response;
 
 public class Response<T>{
+    public static String SUCCESS="200";
+    public static String ERROR="-1";
     private String reCode;
     private String reInfo;
     private T params;

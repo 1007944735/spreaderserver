@@ -6,7 +6,7 @@ spring:
     username: sgevf
     password: 111111
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.103.8.72:3306/test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://47.103.8.72:3306/spreader?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
 
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
