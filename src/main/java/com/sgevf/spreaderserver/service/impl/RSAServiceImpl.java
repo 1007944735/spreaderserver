@@ -19,8 +19,8 @@ public class RSAServiceImpl implements RSAService {
             Map<String, Object> keys = RSAUtils.initKey();
             byte[] publicKey = RSAUtils.getPublicKey(keys);
             byte[] privateKey = RSAUtils.getPrivateKey(keys);
-            redisService.set(uuid, RSAUtils.byte2String(privateKey),0);
-            return RSAUtils.byte2String(publicKey);
+            redisService.set(uuid, RSAUtils.base64Encode(privateKey),0);
+            return RSAUtils.base64Encode(publicKey);
         } catch (Exception e) {
             e.printStackTrace();
         }

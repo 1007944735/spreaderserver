@@ -4,6 +4,6 @@ public class TokenUtils {
     public static String createToken(Integer id,String uuid){
         String s=id+uuid;
         byte[] bytes=s.getBytes();
-        return RSAUtils.byte2String(bytes);
+        return RSAUtils.base64Encode(bytes);
     }
 }

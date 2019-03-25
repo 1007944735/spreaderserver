@@ -27,8 +27,8 @@ public class S0001 {
         try {
             User user = service.login(username);
             String privateKey = redisService.get(uuid,0);
-            String decodePass = RSAUtils.byte2String(RSAUtils.decryptByPrivateKey(RSAUtils.string2Byte(password), RSAUtils.string2Byte(privateKey)));
-            String pass=DigestUtils.md5DigestAsHex(decodePass.getBytes());
+            byte[] decodePass = RSAUtils.decryptByPrivateKey(RSAUtils.base64Decode(password), RSAUtils.base64Decode(privateKey));
+            String pass=DigestUtils.md5DigestAsHex(decodePass);
             if (user == null) {
                 return new Response<>(HttpResponse.ERROR, "帐号不存在", new LoginDto());
             } else if (user.getPassword().equals(pass)) {
