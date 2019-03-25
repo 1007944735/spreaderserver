@@ -1,15 +1,25 @@
 package com.sgevf.spreaderserver.dao;
 
 import com.sgevf.spreaderserver.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
     @Select("select * from user where id=#{id}")
+    @Results({
+            @Result(column = "register_date", property = "registerDate")
+    })
     User findUser(@Param("id") Integer id);
-    @Insert("insert into user(name,age) values(#{name},#{age})")
-    Integer insertUser(@Param("name") String name, @Param("age") String age);
+
+    @Select("select * from user where username=#{username}")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "username", property = "username"),
+            @Result(column = "password", property = "password"),
+            @Result(column = "nickname", property = "nickname"),
+            @Result(column = "head_portrait", property = "headPortrait"),
+            @Result(column = "register_date", property = "registerDate"),
+            @Result(column = "phone", property = "phone")
+    })
+    User findUserByUsername(@Param("username") String username);
 }

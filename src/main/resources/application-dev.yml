@@ -20,4 +20,11 @@ spring:
     static-locations: classpath:/static/
   mvc:
     static-path-pattern: /**
+  redis:
+    host: 47.103.8.72
+    port: 6379
+    password: sgevf
+    timeout: 1000ms
+    database: 0
+
 

@@ -1,11 +1,15 @@
 package com.sgevf.spreaderserver.entity.response;
 
 public class Response<T>{
-    public static String SUCCESS="200";
-    public static String ERROR="-1";
     private String reCode;
     private String reInfo;
-    private T params;
+    private T t;
+
+    public Response(String reCode,String reInfo,T t){
+        this.reCode=reCode;
+        this.reInfo=reInfo;
+        this.t=t;
+    }
 
     public String getReCode() {
         return reCode;
@@ -24,10 +28,10 @@ public class Response<T>{
     }
 
     public T getParams() {
-        return params;
+        return t;
     }
 
-    public void setParams(T params) {
-        this.params = params;
+    public void setParams(T t) {
+        this.t = t;
     }
 }
