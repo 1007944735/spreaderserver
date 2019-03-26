@@ -21,7 +21,8 @@ public class S0002 {
     public Response<String> s0002(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("valid") String valid, @RequestParam("uuuid") String uuuid, @RequestHeader("uuid") String uuid) {
         try {
             String privateKey = redisService.get(uuid, 0);
-            byte[] decodePass = RSAUtils.decryptByPrivateKey(RSAUtils.base64Decode(password), RSAUtils.base64Decode(privateKey));
+            byte[] deData=RSAUtils.base64Decode(password);
+            byte[] decodePass=RSAUtils.decryptByPrivateKey(deData,RSAUtils.base64Decode(privateKey));
             String pass = DigestUtils.md5DigestAsHex(decodePass);
             int id = userService.register(username, pass, valid, uuuid);
             if (id > 0) {
