@@ -1,14 +1,13 @@
 package com.sgevf.spreaderserver.utils;
 
+import org.apache.commons.codec.binary.Base64;
+
 import javax.crypto.Cipher;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -172,8 +171,7 @@ public class RSAUtils {
      * @return
      */
     public static String base64Encode(byte[] bytes){
-
-            return new String(Base64.getEncoder().encode(bytes));
+        return Base64.encodeBase64String(bytes);
     }
 
     /**
@@ -182,12 +180,7 @@ public class RSAUtils {
      * @return
      */
     public static byte[] base64Decode(String string){
-        try {
-            return Base64.getDecoder().decode(string.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return Base64.decodeBase64(string);
     }
 
 }

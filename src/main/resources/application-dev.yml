@@ -17,7 +17,7 @@ spring:
       time-between-eviction-runs-millis: 60000
       min-evictable-idle-time-millis: 300000
   resources:
-    static-locations: classpath:/static/
+    static-locations: file:C://Image
   mvc:
     static-path-pattern: /**
   redis:
@@ -26,5 +26,9 @@ spring:
     password: sgevf
     timeout: 1000ms
     database: 0
+
+
+valid-url-path: C://Image/
+url: http://47.103.8.72:8080/spreader/
 
 

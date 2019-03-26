@@ -23,19 +23,26 @@ public class RedisServiceImpl implements RedisService {
         LettuceConnectionFactory factory = (LettuceConnectionFactory) redisTemplate.getConnectionFactory();
         factory.setDatabase(index);
         redisTemplate.setConnectionFactory(factory);
+        factory.resetConnection();
         return redisTemplate.opsForValue().get(key);
     }
 
     @Override
     public void set(String key, String values) {
-        redisTemplate.opsForValue().set(key, values, 5, TimeUnit.HOURS);
+        this.set(key, values, 0, 5, TimeUnit.HOURS);
     }
 
     @Override
     public void set(String key, String values, int index) {
+        this.set(key, values, index, 5, TimeUnit.HOURS);
+    }
+
+    @Override
+    public void set(String key, String values, int index, long l, TimeUnit timeUnit) {
         LettuceConnectionFactory factory = (LettuceConnectionFactory) redisTemplate.getConnectionFactory();
         factory.setDatabase(index);
         redisTemplate.setConnectionFactory(factory);
-        redisTemplate.opsForValue().set(key, values, 5, TimeUnit.HOURS);
+        factory.resetConnection();
+        redisTemplate.opsForValue().set(key, values, l, timeUnit);
     }
 }

@@ -1,5 +1,7 @@
 package com.sgevf.spreaderserver.service;
 
+import java.util.concurrent.TimeUnit;
+
 public interface RedisService {
     String get(String key);
 
@@ -8,4 +10,6 @@ public interface RedisService {
     void set(String key, String values);
 
     void set(String key, String values, int index);
+
+    void set(String key, String values, int index, long l, TimeUnit timeUnit);
 }

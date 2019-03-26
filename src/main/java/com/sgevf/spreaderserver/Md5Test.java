@@ -5,7 +5,7 @@ import com.sgevf.spreaderserver.utils.RSAUtils;
 public class Md5Test {
     public static void main(String[] args) {
         try {
-            byte[] publicKey = RSAUtils.base64Decode("MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKF7YxFboLLBgM3RgwSxvYS3mY784Few1T27KXu/UltFyHSkmF17Ecl51ouyAHvV1d4BLTbj8fo1eWZUJgqEJoECAwEAAQ==");
+            byte[] publicKey = RSAUtils.base64Decode("MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIKULY5eU5Zmg3FhA+bOykvTWxBfhiiyJLdX5ylK+LF1Cu2nbJb1G0ThLXxuPCZhdy/PDl8XGzXcoj8svqGWS3sCAwEAAQ==");
             String data = "123456";
             String s=RSAUtils.base64Encode(RSAUtils.encryptByPublicKey(data.getBytes("utf-8"), publicKey));
             System.out.println(s);

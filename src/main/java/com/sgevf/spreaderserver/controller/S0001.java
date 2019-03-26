@@ -8,7 +8,6 @@ import com.sgevf.spreaderserver.service.UserService;
 import com.sgevf.spreaderserver.utils.HttpResponse;
 import com.sgevf.spreaderserver.utils.RSAUtils;
 import com.sgevf.spreaderserver.utils.TokenUtils;
-import jdk.nashorn.internal.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
