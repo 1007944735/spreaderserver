@@ -8,13 +8,13 @@ public class WithdrawHistory {
     private String status;
     private String failReason;
 
-    private User takerId;
+    private Integer takerId;
 
-    public User getTakerId() {
+    public Integer getTakerId() {
         return takerId;
     }
 
-    public void setTakerId(User takerId) {
+    public void setTakerId(Integer takerId) {
         this.takerId = takerId;
     }
 

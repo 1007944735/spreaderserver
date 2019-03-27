@@ -41,4 +41,15 @@ public class UserServiceImpl implements UserService {
             return -1;//验证码不正确
         }
     }
+
+    @Override
+    public int updateUser(String nickname, String phone, String type, String token) {
+        int id= Integer.parseInt(redisService.get(token,1));
+        if("1".equals(type)){
+            return mapper.updateUserByNickname(nickname,id);
+        }else if("2".equals(type)){
+            return mapper.updateUserByPhone(phone,id);
+        }
+        return 0;
+    }
 }

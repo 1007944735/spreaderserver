@@ -26,9 +26,16 @@ spring:
     password: sgevf
     timeout: 1000ms
     database: 0
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 1000MB
 
+
+url: http://47.103.8.72:8080/spreader/
 
 valid-url-path: C://Image/
-url: http://47.103.8.72:8080/spreader/
+picture-url-path: C://Image/picture/
+video-url-path: C://Image/video/
 
 

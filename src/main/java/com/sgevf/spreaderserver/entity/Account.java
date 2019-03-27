@@ -5,13 +5,13 @@ public class Account {
     private String balance;
     private String alipayAccount;
 
-    private User userId;
+    private Integer userId;
 
-    public User getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

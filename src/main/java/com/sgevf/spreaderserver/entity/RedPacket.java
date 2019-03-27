@@ -7,12 +7,29 @@ public class RedPacket {
     private String pubTime;
     private String pubLongitude;
     private String pubLatitude;
+    private String startTime;
     private String endTime;
     private String maxNumber;
     private String pubAddress;
 
-    private User puberId;
-    private Expand expandId;
+    private Integer puberId;
+    private Integer expandId;
+
+    public Integer getPuberId() {
+        return puberId;
+    }
+
+    public void setPuberId(Integer puberId) {
+        this.puberId = puberId;
+    }
+
+    public Integer getExpandId() {
+        return expandId;
+    }
+
+    public void setExpandId(Integer expandId) {
+        this.expandId = expandId;
+    }
 
     public Integer getId() {
         return id;
@@ -86,19 +103,12 @@ public class RedPacket {
         this.pubAddress = pubAddress;
     }
 
-    public User getPuberId() {
-        return puberId;
+
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setPuberId(User puberId) {
-        this.puberId = puberId;
-    }
-
-    public Expand getExpandId() {
-        return expandId;
-    }
-
-    public void setExpandId(Expand expandId) {
-        this.expandId = expandId;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 }

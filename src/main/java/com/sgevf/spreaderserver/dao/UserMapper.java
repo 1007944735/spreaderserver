@@ -17,7 +17,13 @@ public interface UserMapper {
     })
     User findUserByUsername(@Param("username") String username);
 
-    @Insert("insert into user(username,password) values(#{username},#{password})")
-    @Options(useGeneratedKeys=true, keyProperty="id",keyColumn = "id")
+    @Insert("insert into user(username,password,nickname) values(#{username},#{password},#{nickname})")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insertUser(User user);
+
+    @Update("update user set nickname=#{nickname} where id=#{id}")
+    int updateUserByNickname(@Param("nickname") String nickname, @Param("id") int id);
+
+    @Update("update user set phone=#{phone} where id=#{id}")
+    int updateUserByPhone(@Param("phone") String phone, @Param("id") int id);
 }

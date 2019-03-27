@@ -4,5 +4,8 @@ import com.sgevf.spreaderserver.entity.User;
 
 public interface UserService {
     User login(String username);
-    int register(String username,String password,String valid,String uuuid);
+
+    int register(String username, String password, String valid, String uuuid);
+
+    int updateUser(String nickname,String phone,String type,String token);
 }

@@ -4,22 +4,14 @@ public class RedPacketHisHistory {
     private Integer id;
     private String robMoney;
     private String robTime;
-    private RedPacket redPacketId;
-    private User robberId;
+    private Integer redPacketId;
+    private Integer robberId;
 
-    public RedPacket getRedPacketId() {
-        return redPacketId;
-    }
-
-    public void setRedPacketId(RedPacket redPacketId) {
-        this.redPacketId = redPacketId;
-    }
-
-    public User getRobberId() {
+    public Integer getRobberId() {
         return robberId;
     }
 
-    public void setRobberId(User robberId) {
+    public void setRobberId(Integer robberId) {
         this.robberId = robberId;
     }
 
