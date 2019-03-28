@@ -81,6 +81,7 @@ public class PubServiceImpl implements PubService {
             return -1;
         }
         redisService.set(rp.getId()+"",rp.getAmount()+"",3);
+        redisService.set(rp.getId()+"",rp.getMaxNumber()+"",4);
         return rp.getId();
     }
 
