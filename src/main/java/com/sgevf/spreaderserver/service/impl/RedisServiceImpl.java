@@ -28,13 +28,12 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void set(String key, String values) {
-        this.set(key, values, 0, 5, TimeUnit.HOURS);
-    }
-
-    @Override
     public void set(String key, String values, int index) {
-        this.set(key, values, index, 5, TimeUnit.HOURS);
+        LettuceConnectionFactory factory = (LettuceConnectionFactory) redisTemplate.getConnectionFactory();
+        factory.setDatabase(index);
+        redisTemplate.setConnectionFactory(factory);
+        factory.resetConnection();
+        redisTemplate.opsForValue().set(key, values);
     }
 
     @Override
@@ -44,5 +43,14 @@ public class RedisServiceImpl implements RedisService {
         redisTemplate.setConnectionFactory(factory);
         factory.resetConnection();
         redisTemplate.opsForValue().set(key, values, l, timeUnit);
+    }
+
+    @Override
+    public void delete(String key, int index) {
+        LettuceConnectionFactory factory = (LettuceConnectionFactory) redisTemplate.getConnectionFactory();
+        factory.setDatabase(index);
+        redisTemplate.setConnectionFactory(factory);
+        factory.resetConnection();
+        redisTemplate.delete(key);
     }
 }

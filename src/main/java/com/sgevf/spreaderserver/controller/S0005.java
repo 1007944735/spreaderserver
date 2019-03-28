@@ -23,7 +23,7 @@ public class S0005 {
     private RedisService redisService;
 
     @ResponseBody
-    @RequestMapping(value = "S0005", method = RequestMethod.POST)
+    @RequestMapping(value = "/S0005", method = RequestMethod.POST)
     public Response<String> s0005(
             @RequestParam("token") String token,
             @RequestParam("type") String type,
@@ -36,19 +36,19 @@ public class S0005 {
             @RequestParam("pubAddress") String pubAddress,
             @RequestParam("title") String title,
             @RequestParam("info") String info,
-            @RequestParam("video") MultipartFile video,
+            @RequestParam(value = "video",required = false) MultipartFile video,
             HttpServletRequest request
     ) {
         List<MultipartFile> pictures= ((MultipartHttpServletRequest) request).getFiles("pictures");
 
         RedPacket redPacket=new RedPacket();
-        redPacket.setAmount(amount);
+        redPacket.setAmount(Integer.parseInt(amount));
         redPacket.setType(type);
         redPacket.setPubLongitude(pubLongitude);
         redPacket.setPubLatitude(pubLatitude);
         redPacket.setStartTime(startTime);
         redPacket.setEndTime(endTime);
-        redPacket.setMaxNumber(maxNumber);
+        redPacket.setMaxNumber(Integer.parseInt(maxNumber));
         redPacket.setPubAddress(pubAddress);
         redPacket.setPuberId(Integer.valueOf(redisService.get(token,1)));
 

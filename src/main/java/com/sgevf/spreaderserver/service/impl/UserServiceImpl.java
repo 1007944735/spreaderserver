@@ -15,11 +15,24 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RedisService redisService;
 
+    /**
+     * 登录
+     * @param username
+     * @return
+     */
     @Override
     public User login(String username) {
         return mapper.findUserByUsername(username);
     }
 
+    /**
+     * 注册
+     * @param username
+     * @param password
+     * @param valid
+     * @param uuuid
+     * @return
+     */
     @Override
     public int register(String username, String password, String valid, String uuuid) {
         User user = mapper.findUserByUsername(username);
@@ -42,6 +55,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * 更新用户个人信息
+     * @param nickname
+     * @param phone
+     * @param type
+     * @param token
+     * @return
+     */
     @Override
     public int updateUser(String nickname, String phone, String type, String token) {
         int id= Integer.parseInt(redisService.get(token,1));

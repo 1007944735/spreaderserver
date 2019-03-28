@@ -30,7 +30,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String uploadImage(MultipartFile file) {
-        if(file.isEmpty()){
+        if(file==null){
             return "";
         }
         String[] filePart=file.getOriginalFilename().split("\\.");
@@ -48,7 +48,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String uploadVideo(MultipartFile file) {
-        if(file.isEmpty()){
+        if(file==null){
             return "";
         }
         String[] filePart=file.getOriginalFilename().split("\\.");

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.TimeUnit;
+
 @RestController
 public class S0001 {
     @Autowired
@@ -33,7 +35,7 @@ public class S0001 {
             } else if (user.getPassword().equals(pass)) {
                 String token=TokenUtils.createToken(user.getId(),uuid);
                 LoginDto l=new LoginDto(user.getId(),user.getUsername(),user.getNickname(),user.getHeadPortrait(),user.getPhone(),token);
-                redisService.set(token,user.getId()+"",1);
+                redisService.set(token,user.getId()+"",1,5,TimeUnit.HOURS);
                 return new Response<>(HttpResponse.SUCCESS, "成功", l);
             } else {
                 return new Response<>(HttpResponse.ERROR, "密码不正确", new LoginDto());

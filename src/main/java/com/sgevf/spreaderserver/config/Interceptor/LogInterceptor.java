@@ -14,9 +14,10 @@ import java.util.Enumeration;
 @Component
 public class LogInterceptor implements HandlerInterceptor {
     private static Logger logger = LoggerFactory.getLogger(LogInterceptor.class);
-
+    long startTime;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        startTime=System.currentTimeMillis();
         if("GET".equals(request.getMethod())) {
             logger.info("parameters:{}", request.getQueryString());
         }else if("POST".equals(request.getMethod())){
@@ -33,5 +34,11 @@ public class LogInterceptor implements HandlerInterceptor {
             logger.info("parameters:{}", json.toString());
         }
         return true;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        long endTime=System.currentTimeMillis();
+        logger.info("花费时间:{}",endTime-startTime);
     }
 }

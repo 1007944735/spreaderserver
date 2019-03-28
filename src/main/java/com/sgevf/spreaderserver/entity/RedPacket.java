@@ -1,15 +1,17 @@
 package com.sgevf.spreaderserver.entity;
 
+import org.omg.PortableInterceptor.INACTIVE;
+
 public class RedPacket {
     private Integer id;
-    private String amount;
+    private Integer amount;
     private String type;
     private String pubTime;
     private String pubLongitude;
     private String pubLatitude;
     private String startTime;
     private String endTime;
-    private String maxNumber;
+    private Integer maxNumber;
     private String pubAddress;
 
     private Integer puberId;
@@ -37,14 +39,6 @@ public class RedPacket {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
     }
 
     public String getType() {
@@ -87,11 +81,19 @@ public class RedPacket {
         this.endTime = endTime;
     }
 
-    public String getMaxNumber() {
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public Integer getMaxNumber() {
         return maxNumber;
     }
 
-    public void setMaxNumber(String maxNumber) {
+    public void setMaxNumber(Integer maxNumber) {
         this.maxNumber = maxNumber;
     }
 

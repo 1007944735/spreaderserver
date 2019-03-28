@@ -1,6 +1,6 @@
 package com.sgevf.spreaderserver.entity;
 
-public class RedPacketHisHistory {
+public class RedPacketHistory {
     private Integer id;
     private String robMoney;
     private String robTime;
@@ -21,6 +21,14 @@ public class RedPacketHisHistory {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getRedPacketId() {
+        return redPacketId;
+    }
+
+    public void setRedPacketId(Integer redPacketId) {
+        this.redPacketId = redPacketId;
     }
 
     public String getRobMoney() {

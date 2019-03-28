@@ -10,18 +10,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class S0006 {
-
+public class S0007 {
     @Autowired
     private PubService pubService;
 
     private List<RedPacketSearchDto> results;
 
     @ResponseBody
-    @RequestMapping(value = "/S0006", method = RequestMethod.POST)
-    public Response<List<RedPacketSearchDto>> s0006(@RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude) {
+    @RequestMapping(value = "/S0007", method = RequestMethod.POST)
+    public Response<List<RedPacketSearchDto>> s0007(@RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude, @RequestParam("type") String type) {
         try {
-            results = pubService.searchDefault(longitude, latitude);
+            results = pubService.searchByOrder(longitude, latitude, type);
         } catch (Exception e) {
             e.printStackTrace();
             return new Response<>(HttpResponse.ERROR, "系统错误", null);

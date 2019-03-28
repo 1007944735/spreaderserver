@@ -7,9 +7,9 @@ public interface RedisService {
 
     String get(String key, int index);
 
-    void set(String key, String values);
-
     void set(String key, String values, int index);
 
     void set(String key, String values, int index, long l, TimeUnit timeUnit);
+
+    void delete(String key,int index);
 }

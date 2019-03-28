@@ -12,7 +12,7 @@ public class S0004 {
     private UserService userService;
 
     @ResponseBody
-    @RequestMapping(value = "S0004", method = RequestMethod.POST)
+    @RequestMapping(value = "/S0004", method = RequestMethod.POST)
     public Response<String> s0004(@RequestParam("type") String type, @RequestParam(value = "nickname",required = false) String nickname, @RequestParam(value = "phone",required = false) String phone, @RequestParam("token") String token) {
         int size = userService.updateUser(nickname, phone, type, token);
         if (size > 0) {

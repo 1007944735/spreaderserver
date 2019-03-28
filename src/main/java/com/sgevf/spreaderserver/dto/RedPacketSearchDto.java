@@ -3,17 +3,18 @@ package com.sgevf.spreaderserver.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RedPacketSelectDto {
+public class RedPacketSearchDto {
     private Integer id;
-    private String amount;
+    private Integer amount;
     private String type;
     private String pubTime;
     private String pubLongitude;
     private String pubLatitude;
     private String startTime;
     private String endTime;
-    private String maxNumber;
+    private Integer maxNumber;
     private String pubAddress;
+    private Double distance;
     private String title;
     private String info;
     private String videoUrl;
@@ -24,23 +25,16 @@ public class RedPacketSelectDto {
     private String image5Url;
     private String image6Url;
 
-    public RedPacketSelectDto() {
+    public RedPacketSearchDto() {
     }
 
     public Integer getId() {
+
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
     }
 
     public String getType() {
@@ -89,14 +83,6 @@ public class RedPacketSelectDto {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
-    }
-
-    public String getMaxNumber() {
-        return maxNumber;
-    }
-
-    public void setMaxNumber(String maxNumber) {
-        this.maxNumber = maxNumber;
     }
 
     public String getPubAddress() {
@@ -177,5 +163,29 @@ public class RedPacketSelectDto {
 
     public void setImage6Url(String image6Url) {
         this.image6Url = image6Url;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public Integer getMaxNumber() {
+        return maxNumber;
+    }
+
+    public void setMaxNumber(Integer maxNumber) {
+        this.maxNumber = maxNumber;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 }

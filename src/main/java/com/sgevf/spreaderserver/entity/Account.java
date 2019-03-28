@@ -2,7 +2,7 @@ package com.sgevf.spreaderserver.entity;
 
 public class Account {
     private Integer id;
-    private String balance;
+    private double balance;
     private String alipayAccount;
 
     private Integer userId;
@@ -23,11 +23,11 @@ public class Account {
         this.id = id;
     }
 
-    public String getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
