@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RedPacketSearchDto {
     private Integer id;
-    private Integer amount;
+    private Double amount;
     private String type;
     private String pubTime;
     private String pubLongitude;
@@ -165,11 +165,11 @@ public class RedPacketSearchDto {
         this.image6Url = image6Url;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

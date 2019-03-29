@@ -42,7 +42,7 @@ public class S0005 {
         List<MultipartFile> pictures= ((MultipartHttpServletRequest) request).getFiles("pictures");
 
         RedPacket redPacket=new RedPacket();
-        redPacket.setAmount(Integer.parseInt(amount));
+        redPacket.setAmount(Double.parseDouble(amount));
         redPacket.setType(type);
         redPacket.setPubLongitude(pubLongitude);
         redPacket.setPubLatitude(pubLatitude);

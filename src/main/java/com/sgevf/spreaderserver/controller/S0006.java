@@ -7,7 +7,9 @@ import com.sgevf.spreaderserver.utils.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class S0006 {
@@ -16,16 +18,19 @@ public class S0006 {
     private PubService pubService;
 
     private List<RedPacketSearchDto> results;
+    private Map<String,List<RedPacketSearchDto>> map;
 
     @ResponseBody
     @RequestMapping(value = "/S0006", method = RequestMethod.POST)
-    public Response<List<RedPacketSearchDto>> s0006(@RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude) {
+    public Response<Map<String,List<RedPacketSearchDto>>> s0006(@RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude) {
+        map=new HashMap<>();
         try {
             results = pubService.searchDefault(longitude, latitude);
+            map.put("list",results);
         } catch (Exception e) {
             e.printStackTrace();
             return new Response<>(HttpResponse.ERROR, "系统错误", null);
         }
-        return new Response<>(HttpResponse.SUCCESS, "成功", results);
+        return new Response<>(HttpResponse.SUCCESS, "成功", map);
     }
 }

@@ -1,10 +1,8 @@
 package com.sgevf.spreaderserver.entity;
 
-import org.omg.PortableInterceptor.INACTIVE;
-
 public class RedPacket {
     private Integer id;
-    private Integer amount;
+    private Double amount;
     private String type;
     private String pubTime;
     private String pubLongitude;
@@ -81,11 +79,11 @@ public class RedPacket {
         this.endTime = endTime;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
