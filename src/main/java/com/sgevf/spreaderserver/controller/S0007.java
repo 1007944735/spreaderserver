@@ -1,36 +1,37 @@
 package com.sgevf.spreaderserver.controller;
 
-import com.sgevf.spreaderserver.dto.RedPacketSearchDto;
+import com.sgevf.spreaderserver.dto.GrabResultDto;
 import com.sgevf.spreaderserver.entity.response.Response;
-import com.sgevf.spreaderserver.service.PubService;
+import com.sgevf.spreaderserver.service.GrabService;
+import com.sgevf.spreaderserver.service.RedisService;
+import com.sgevf.spreaderserver.service.ServiceModel;
 import com.sgevf.spreaderserver.utils.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class S0007 {
     @Autowired
-    private PubService pubService;
+    private RedisService redisService;
 
-    private List<RedPacketSearchDto> results;
-    private Map<String,List<RedPacketSearchDto>> map;
+    @Autowired
+    private GrabService grabService;
 
     @ResponseBody
     @RequestMapping(value = "/S0007", method = RequestMethod.POST)
-    public Response<Map<String,List<RedPacketSearchDto>>> s0007(@RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude, @RequestParam("type") String type) {
-        map=new HashMap<>();
-        try {
-            results = pubService.searchByOrder(longitude, latitude, type);
-            map.put("list",results);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Response<>(HttpResponse.ERROR, "系统错误", null);
+    public Response<GrabResultDto> s0007(@RequestParam("redPacketId") int redPacketId, @RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude, @RequestParam("token") String token, @RequestParam("isLook") boolean isLook) {
+        int userId = Integer.parseInt(redisService.get(token, 1));
+        ServiceModel<GrabResultDto> results = grabService.grab(redPacketId, userId, longitude, latitude, isLook);
+        switch (results.code) {
+            case -1:
+                return new Response<>(HttpResponse.ERROR, "距离太远", null);
+            case -2:
+                return new Response<>(HttpResponse.ERROR, "不在时间范围内", null);
+            case -3:
+                return new Response<>(HttpResponse.ERROR, "红包已被抢完", null);
+            case 200:
+                return new Response<>(HttpResponse.SUCCESS, "成功", results.t);
         }
-        return new Response<>(HttpResponse.SUCCESS, "成功", map);
+        return new Response<>(HttpResponse.ERROR,"系统错误",null);
     }
 }

@@ -13,21 +13,21 @@ import java.util.Map;
 
 @RestController
 public class S0006 {
-
     @Autowired
     private PubService pubService;
 
-    private List<RedPacketSearchDto> results;
     private Map<String,List<RedPacketSearchDto>> map;
 
     @ResponseBody
     @RequestMapping(value = "/S0006", method = RequestMethod.POST)
-    public Response<Map<String,List<RedPacketSearchDto>>> s0006(@RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude) {
-        map=new HashMap<>();
+    public Response< Map<String,List<RedPacketSearchDto>>> s0006(@RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude, @RequestParam(value = "orderType", required = false) String orderType, @RequestParam(value = "redPacketType", required = false) String redPacketType, @RequestParam(value = "number", required = false) String number, @RequestParam(value = "amount", required = false) String amount) {
         try {
-            results = pubService.searchDefault(longitude, latitude);
-            map.put("list",results);
-        } catch (Exception e) {
+            map = new HashMap<>();
+            String[] numbers = !"".equals(number) ? number.split(",") : null;
+            String[] amounts = !"".equals(amount) ? amount.split(",") : null;
+            List<RedPacketSearchDto> result = pubService.searchSearch(longitude, latitude, orderType, redPacketType, numbers, amounts);
+            map.put("list", result);
+        }catch (Exception e){
             e.printStackTrace();
             return new Response<>(HttpResponse.ERROR, "系统错误", null);
         }

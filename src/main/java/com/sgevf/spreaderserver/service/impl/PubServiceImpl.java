@@ -86,56 +86,25 @@ public class PubServiceImpl implements PubService {
     }
 
     /**
-     * 获取附近红包信息(默认方式)
-     *
+     * 根据条件搜索附近红包
      * @param longitude
      * @param latitude
+     * @param orderType 1 人数最多，2 金额最大，3 距离最近
+     * @param redPacketType 0 随机红包,1 固定红包
+     * @param numbers
+     * @param amounts
      * @return
      */
     @Override
-    public List<RedPacketSearchDto> searchDefault(String longitude, String latitude) {
-        List<RedPacket> redPackets = redPacketMapper.queryRedPacket();
+    public List<RedPacketSearchDto> searchSearch(String longitude, String latitude, String orderType, String redPacketType, String[] numbers, String[] amounts) {
+        List<RedPacket> redPackets=redPacketMapper.queryRedPacketSearch(orderType,redPacketType,numbers,amounts);
         Point2D a = new Point2D.Double(Double.valueOf(longitude), Double.valueOf(latitude));
-        return transform(redPackets, a, false);
-    }
-
-    /**
-     * 获取附近红包信息
-     *
-     * @param longitude
-     * @param latitude
-     * @param type      1 人数最多 2 金额最大 3 离我最近
-     * @return
-     */
-    @Override
-    public List<RedPacketSearchDto> searchByOrder(String longitude, String latitude, String type) {
-        List<RedPacket> redPackets = null;
-        Point2D a = new Point2D.Double(Double.valueOf(longitude), Double.valueOf(latitude));
-        List<RedPacketSearchDto> result = null;
-        switch (type) {
-            case "1":
-                redPackets = redPacketMapper.queryRedPacketOrderByNumber();
-                result = transform(redPackets, a, false);
-                break;
-            case "2":
-                redPackets = redPacketMapper.queryRedPacketOrderByAmount();
-                result = transform(redPackets, a, false);
-                break;
-            case "3":
-                redPackets = redPacketMapper.queryRedPacket();
-                result = transform(redPackets, a, true);
-                break;
+        if("3".equals(orderType)){
+            return transform(redPackets, a, true);
+        }else {
+            return transform(redPackets, a, false);
         }
-        return result;
     }
-
-    @Override
-    public List<RedPacketSearchDto> searchByFilter(String longitude, String latitude, String type, String[] numbers, String[] amounts) {
-        List<RedPacket> redPackets=redPacketMapper.queryRedPacketFilter(type,numbers,amounts);
-        Point2D a = new Point2D.Double(Double.valueOf(longitude), Double.valueOf(latitude));
-        return transform(redPackets, a, false);
-    }
-
 
     private List<RedPacketSearchDto> transform(List<RedPacket> redPackets, Point2D dot, boolean distance) {
         List<RedPacketSearchDto> result = new ArrayList<>();
@@ -156,6 +125,10 @@ public class PubServiceImpl implements PubService {
             double d = MathUtils.getDistance(dot, b);
             BigDecimal bg = new BigDecimal(d);
             d = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            //范围限制
+//            if(d>5000){
+//                continue;
+//            }
             searchDto.setDistance(d);
 
             Expand e = expandMapper.queryExpandById(redPacket.getExpandId());
