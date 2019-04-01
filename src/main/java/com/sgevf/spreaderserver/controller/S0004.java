@@ -16,7 +16,7 @@ public class S0004 {
     public Response<String> s0004(@RequestParam("type") String type, @RequestParam(value = "nickname",required = false) String nickname, @RequestParam(value = "phone",required = false) String phone, @RequestParam("token") String token) {
         int size = userService.updateUser(nickname, phone, type, token);
         if (size > 0) {
-            return new Response<>(HttpResponse.SUCCESS, "成功", "");
+            return new Response<>(HttpResponse.SUCCESS, "成功", "修改成功");
         } else {
             return new Response<>(HttpResponse.ERROR, "修改失败", "");
         }

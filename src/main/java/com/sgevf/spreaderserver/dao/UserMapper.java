@@ -5,6 +5,18 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
+    @Select("select * from user where id=#{id}")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "username", property = "username"),
+            @Result(column = "password", property = "password"),
+            @Result(column = "nickname", property = "nickname"),
+            @Result(column = "head_portrait", property = "headPortrait"),
+            @Result(column = "register_date", property = "registerDate"),
+            @Result(column = "phone", property = "phone")
+    })
+    User findUserById(@Param("id") Integer id);
+
     @Select("select * from user where username=#{username}")
     @Results({
             @Result(column = "id", property = "id"),
@@ -26,4 +38,7 @@ public interface UserMapper {
 
     @Update("update user set phone=#{phone} where id=#{id}")
     int updateUserByPhone(@Param("phone") String phone, @Param("id") int id);
+
+    @Update("update user set password=#{password} where id=#{id}")
+    int updatePassword(@Param("id") int id, @Param("password") String password);
 }

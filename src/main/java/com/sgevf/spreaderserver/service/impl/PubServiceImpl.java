@@ -2,12 +2,15 @@ package com.sgevf.spreaderserver.service.impl;
 
 import com.sgevf.spreaderserver.dao.ExpandMapper;
 import com.sgevf.spreaderserver.dao.RedPacketMapper;
+import com.sgevf.spreaderserver.dto.RedPacketDetailsDto;
 import com.sgevf.spreaderserver.dto.RedPacketSearchDto;
 import com.sgevf.spreaderserver.entity.Expand;
 import com.sgevf.spreaderserver.entity.RedPacket;
+import com.sgevf.spreaderserver.entity.User;
 import com.sgevf.spreaderserver.service.FileService;
 import com.sgevf.spreaderserver.service.PubService;
 import com.sgevf.spreaderserver.service.RedisService;
+import com.sgevf.spreaderserver.service.UserService;
 import com.sgevf.spreaderserver.utils.MathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,9 @@ public class PubServiceImpl implements PubService {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private UserService userService;
 
     private String[] urls;
 
@@ -80,16 +86,17 @@ public class PubServiceImpl implements PubService {
         if (rNum <= 0) {
             return -1;
         }
-        redisService.set(rp.getId()+"",rp.getAmount()+"",3);
-        redisService.set(rp.getId()+"",rp.getMaxNumber()+"",4);
+        redisService.set(rp.getId() + "", rp.getAmount() + "", 3);
+        redisService.set(rp.getId() + "", rp.getMaxNumber() + "", 4);
         return rp.getId();
     }
 
     /**
      * 根据条件搜索附近红包
+     *
      * @param longitude
      * @param latitude
-     * @param orderType 1 人数最多，2 金额最大，3 距离最近
+     * @param orderType     1 人数最多，2 金额最大，3 距离最近
      * @param redPacketType 0 随机红包,1 固定红包
      * @param numbers
      * @param amounts
@@ -97,13 +104,43 @@ public class PubServiceImpl implements PubService {
      */
     @Override
     public List<RedPacketSearchDto> searchSearch(String longitude, String latitude, String orderType, String redPacketType, String[] numbers, String[] amounts) {
-        List<RedPacket> redPackets=redPacketMapper.queryRedPacketSearch(orderType,redPacketType,numbers,amounts);
+        List<RedPacket> redPackets = redPacketMapper.queryRedPacketSearch(orderType, redPacketType, numbers, amounts);
         Point2D a = new Point2D.Double(Double.valueOf(longitude), Double.valueOf(latitude));
-        if("3".equals(orderType)){
+        if ("3".equals(orderType)) {
             return transform(redPackets, a, true);
-        }else {
+        } else {
             return transform(redPackets, a, false);
         }
+    }
+
+    @Override
+    public RedPacketDetailsDto getRedPacketDetails(Integer redPacketId, String longitude, String latitude) {
+        RedPacketDetailsDto rpdd = new RedPacketDetailsDto();
+        RedPacket redPacket = redPacketMapper.queryRedPacketById(redPacketId);
+        User sponser = userService.queryUserById(redPacket.getPuberId());
+        Expand expand = expandMapper.queryExpandById(redPacket.getExpandId());
+        Point2D a = new Point2D.Double(Double.valueOf(longitude), Double.valueOf(latitude));
+        Point2D b = new Point2D.Double(Double.valueOf(redPacket.getPubLongitude()), Double.valueOf(redPacket.getPubLatitude()));
+        rpdd.setId(redPacket.getId());
+        rpdd.setSponserId(sponser.getId());
+        rpdd.setSponserName(sponser.getNickname());
+        rpdd.setSponserImage(sponser.getHeadPortrait());
+        rpdd.setAmount(redPacket.getAmount());
+        rpdd.setType(redPacket.getType());
+        rpdd.setPubTime(redPacket.getPubTime());
+        rpdd.setPubLongitude(redPacket.getPubLongitude());
+        rpdd.setPubLatitude(redPacket.getPubLatitude());
+        rpdd.setStartTime(redPacket.getStartTime());
+        rpdd.setEndTime(redPacket.getEndTime());
+        rpdd.setMaxNumber(redPacket.getMaxNumber());
+        rpdd.setPubAddress(redPacket.getPubAddress());
+        rpdd.setTitle(expand.getTitle());
+        rpdd.setInfo(expand.getInfo());
+        double d = MathUtils.getDistance(a, b);
+        BigDecimal bg = new BigDecimal(d);
+        d = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        rpdd.setDistance(d);
+        return rpdd;
     }
 
     private List<RedPacketSearchDto> transform(List<RedPacket> redPackets, Point2D dot, boolean distance) {
@@ -146,7 +183,7 @@ public class PubServiceImpl implements PubService {
                     result.add(0, searchDto);
                 } else {
                     for (int i = result.size() - 1; i >= 0; i--) {
-                        if (d > result.get(i).getDistance()) {
+                        if (d >= result.get(i).getDistance()) {
                             result.add(i + 1, searchDto);
                             break;
                         }

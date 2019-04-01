@@ -36,7 +36,7 @@ public class FileServiceImpl implements FileService {
         String[] filePart=file.getOriginalFilename().split("\\.");
         String dateTime=DateUtils.formatCurTime();
         String fileName=PICTURE+getRandomString(4)+dateTime+"."+filePart[filePart.length-1];
-        File f=new File(pictureUrlPath+fileName);
+        File f=new File(pictureUrlPath+"picture/"+fileName);
         try {
             file.transferTo(f);
         } catch (IOException e) {
@@ -54,7 +54,7 @@ public class FileServiceImpl implements FileService {
         String[] filePart=file.getOriginalFilename().split("\\.");
         String dateTime=DateUtils.formatCurTime();
         String fileName=VIDEO+getRandomString(4)+dateTime+"."+filePart[filePart.length-1];
-        File f=new File(videoUrlPath+fileName);
+        File f=new File(videoUrlPath+"video/"+fileName);
         try {
             file.transferTo(f);
         } catch (IOException e) {

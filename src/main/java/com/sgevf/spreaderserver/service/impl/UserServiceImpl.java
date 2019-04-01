@@ -15,6 +15,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RedisService redisService;
 
+    @Override
+    public User queryUserById(Integer id) {
+        return mapper.findUserById(id);
+    }
+
     /**
      * 登录
      * @param username
@@ -72,5 +77,10 @@ public class UserServiceImpl implements UserService {
             return mapper.updateUserByPhone(phone,id);
         }
         return 0;
+    }
+
+    @Override
+    public int updatePassword(int id,String password) {
+        return mapper.updatePassword(id,password);
     }
 }
