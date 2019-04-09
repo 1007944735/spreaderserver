@@ -13,5 +13,5 @@ public interface PubService {
 
     List<RedPacketSearchDto> searchSearch(String longitude, String latitude, String orderType, String repacketType, String[] numbers, String[] amounts);
 
-    RedPacketDetailsDto getRedPacketDetails(Integer redPacketId, String longitude, String latitude);
+    RedPacketDetailsDto getRedPacketDetails(Integer userId,Integer redPacketId, String longitude, String latitude);
 }

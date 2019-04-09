@@ -3,12 +3,15 @@ package com.sgevf.spreaderserver.service.impl;
 import com.sgevf.spreaderserver.dao.AccountMapper;
 import com.sgevf.spreaderserver.dao.RedPacketHistoryMapper;
 import com.sgevf.spreaderserver.dao.RedPacketMapper;
+import com.sgevf.spreaderserver.dao.UserMapper;
 import com.sgevf.spreaderserver.dto.GrabResultDto;
 import com.sgevf.spreaderserver.entity.RedPacket;
 import com.sgevf.spreaderserver.entity.RedPacketHistory;
+import com.sgevf.spreaderserver.entity.User;
 import com.sgevf.spreaderserver.service.GrabService;
 import com.sgevf.spreaderserver.service.RedisService;
 import com.sgevf.spreaderserver.service.ServiceModel;
+import com.sgevf.spreaderserver.service.UserService;
 import com.sgevf.spreaderserver.utils.DateUtils;
 import com.sgevf.spreaderserver.utils.MathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,8 @@ public class GrabServiceImpl implements GrabService {
 
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Transactional
     @Override
@@ -44,10 +49,10 @@ public class GrabServiceImpl implements GrabService {
         Point2D a = new Point2D.Double(Double.valueOf(longitude), Double.valueOf(latitude));
         Point2D b = new Point2D.Double(Double.valueOf(redPacket.getPubLongitude()), Double.valueOf(redPacket.getPubLatitude()));
         double distance = MathUtils.getDistance(a, b);
-        if (distance > 5) {
-            //距离太远
-            return new ServiceModel<>(-1, null);
-        }
+//        if (distance > 5) {
+//            //距离太远
+//            return new ServiceModel<>(-1, null);
+//        }
         if (!(curTime >= startTime && curTime <= endTime)) {
             //不在时间范围内
             return new ServiceModel<>(-2, null);
@@ -56,6 +61,8 @@ public class GrabServiceImpl implements GrabService {
         if (rph != null) {
             //已经抢过该红包
             grabResultDto.setMoney(rph.getRobMoney());
+            User user=userMapper.findUserById(redPacket.getPuberId());
+            grabResultDto.setName(user.getNickname());
             return new ServiceModel<>(200, grabResultDto);
         }
         synchronized (this) {
@@ -76,14 +83,14 @@ public class GrabServiceImpl implements GrabService {
             accountMapper.updateBalance(money, userId);
             if (num == 1) {
                 //更新redis 剩余红包个数
-                redisService.set(redPacketId + "", num - 1 + "", 3, 10, TimeUnit.MINUTES);
+                redisService.set(redPacketId + "", num - 1 + "", 4, 10, TimeUnit.MINUTES);
                 //更新redis 剩余红包金额
-                redisService.set(redPacketId + "", rMoney - money + "", 4, 10, TimeUnit.MINUTES);
+                redisService.set(redPacketId + "", rMoney - money + "", 3, 10, TimeUnit.MINUTES);
             } else {
                 //更新redis 剩余红包个数
-                redisService.set(redPacketId + "", num - 1 + "", 3);
+                redisService.set(redPacketId + "", num - 1 + "", 4);
                 //更新redis 剩余红包金额
-                redisService.set(redPacketId + "", rMoney - money + "", 4);
+                redisService.set(redPacketId + "", rMoney - money + "", 3);
             }
             grabResultDto.setMoney(money + "");
         }

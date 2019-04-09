@@ -6,10 +6,14 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 @Mapper
 public interface RedPacketHistoryMapper {
-    @Select("select * from red_packet_history")
-    List<RedPacketHistory> queryHistory();
-
     @Select("select * from red_packet_history where id=#{id}")
+    @Results({
+            @Result(column = "id",property = "id"),
+            @Result(column = "red_packet_id",property = "redPacketId"),
+            @Result(column = "robber_id",property = "robberId"),
+            @Result(column = "rob_money",property = "robMoney"),
+            @Result(column = "rob_time",property = "robTime")
+    })
     RedPacketHistory queryHistoryById(@Param("id") int id);
 
     @Select("select rob_money from red_packet_history where robber_id=#{robberId} and red_packet_id=#{redPacketId}")

@@ -1,6 +1,7 @@
 package com.sgevf.spreaderserver.dao;
 
 import com.sgevf.spreaderserver.entity.RedPacket;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Union;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 

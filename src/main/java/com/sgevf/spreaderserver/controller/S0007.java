@@ -19,7 +19,7 @@ public class S0007 {
 
     @ResponseBody
     @RequestMapping(value = "/S0007", method = RequestMethod.POST)
-    public Response<GrabResultDto> s0007(@RequestParam("redPacketId") int redPacketId, @RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude, @RequestParam("token") String token, @RequestParam("isLook") boolean isLook) {
+    public Response<GrabResultDto> s0007(@RequestParam("redPacketId") int redPacketId, @RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude, @RequestParam("token") String token, @RequestParam(value = "isLook",defaultValue = "false",required = false) boolean isLook) {
         int userId = Integer.parseInt(redisService.get(token, 1));
         ServiceModel<GrabResultDto> results = grabService.grab(redPacketId, userId, longitude, latitude, isLook);
         switch (results.code) {

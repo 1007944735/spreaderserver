@@ -21,6 +21,15 @@ public class RedPacketDetailsDto {
     private Double distance;
     private String title;
     private String info;
+    private String isGrab;
+
+    public String getIsGrab() {
+        return isGrab;
+    }
+
+    public void setIsGrab(String isGrab) {
+        this.isGrab = isGrab;
+    }
 
     public RedPacketDetailsDto() {
     }

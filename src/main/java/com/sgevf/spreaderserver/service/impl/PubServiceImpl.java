@@ -1,11 +1,13 @@
 package com.sgevf.spreaderserver.service.impl;
 
 import com.sgevf.spreaderserver.dao.ExpandMapper;
+import com.sgevf.spreaderserver.dao.RedPacketHistoryMapper;
 import com.sgevf.spreaderserver.dao.RedPacketMapper;
 import com.sgevf.spreaderserver.dto.RedPacketDetailsDto;
 import com.sgevf.spreaderserver.dto.RedPacketSearchDto;
 import com.sgevf.spreaderserver.entity.Expand;
 import com.sgevf.spreaderserver.entity.RedPacket;
+import com.sgevf.spreaderserver.entity.RedPacketHistory;
 import com.sgevf.spreaderserver.entity.User;
 import com.sgevf.spreaderserver.service.FileService;
 import com.sgevf.spreaderserver.service.PubService;
@@ -38,6 +40,9 @@ public class PubServiceImpl implements PubService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedPacketHistoryMapper redPacketHistoryMapper;
 
     private String[] urls;
 
@@ -114,8 +119,14 @@ public class PubServiceImpl implements PubService {
     }
 
     @Override
-    public RedPacketDetailsDto getRedPacketDetails(Integer redPacketId, String longitude, String latitude) {
+    public RedPacketDetailsDto getRedPacketDetails(Integer userId,Integer redPacketId, String longitude, String latitude) {
         RedPacketDetailsDto rpdd = new RedPacketDetailsDto();
+        RedPacketHistory history=redPacketHistoryMapper.queryHistoryByRobberIdAndRedPacketId(userId, redPacketId);
+        if(history!=null){
+            rpdd.setIsGrab("1");
+        }else {
+            rpdd.setIsGrab("0");
+        }
         RedPacket redPacket = redPacketMapper.queryRedPacketById(redPacketId);
         User sponser = userService.queryUserById(redPacket.getPuberId());
         Expand expand = expandMapper.queryExpandById(redPacket.getExpandId());

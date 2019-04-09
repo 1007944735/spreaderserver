@@ -1,6 +1,8 @@
 package com.sgevf.spreaderserver.controller;
 
+import com.sgevf.spreaderserver.entity.Account;
 import com.sgevf.spreaderserver.entity.response.Response;
+import com.sgevf.spreaderserver.service.AccountService;
 import com.sgevf.spreaderserver.service.RedisService;
 import com.sgevf.spreaderserver.service.UserService;
 import com.sgevf.spreaderserver.utils.HttpResponse;
@@ -15,6 +17,8 @@ public class S0002 {
     private UserService userService;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private AccountService accountService;
 
     @ResponseBody
     @RequestMapping(value = "/S0002", method = RequestMethod.POST)
@@ -26,6 +30,7 @@ public class S0002 {
             String pass = DigestUtils.md5DigestAsHex(decodePass);
             int id = userService.register(username, pass, valid, uuuid);
             if (id > 0) {
+                accountService.insertAccount(id);
                 return new Response<>(HttpResponse.SUCCESS, "成功", "");
             } else if (id == 0) {
                 return new Response<>(HttpResponse.ERROR, "验证码失效", null);

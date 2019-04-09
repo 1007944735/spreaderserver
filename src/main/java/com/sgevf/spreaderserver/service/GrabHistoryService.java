@@ -1,7 +1,7 @@
 package com.sgevf.spreaderserver.service;
 
-import com.sgevf.spreaderserver.entity.RedPacketHistory;
+import com.sgevf.spreaderserver.dto.AccountRedPacketDetailsDto;
 
 public interface GrabHistoryService {
-    RedPacketHistory queryByRobId(int robid,int redPacketId);
+    AccountRedPacketDetailsDto queryRedPacketHistoryById(int robberId);
 }

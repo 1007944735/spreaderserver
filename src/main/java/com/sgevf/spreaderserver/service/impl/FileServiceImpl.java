@@ -36,14 +36,14 @@ public class FileServiceImpl implements FileService {
         String[] filePart=file.getOriginalFilename().split("\\.");
         String dateTime=DateUtils.formatCurTime();
         String fileName=PICTURE+getRandomString(4)+dateTime+"."+filePart[filePart.length-1];
-        File f=new File(pictureUrlPath+"picture/"+fileName);
+        File f=new File(pictureUrlPath+fileName);
         try {
             file.transferTo(f);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-        return url+fileName;
+        return url+"picture/"+fileName;
     }
 
     @Override
@@ -54,14 +54,14 @@ public class FileServiceImpl implements FileService {
         String[] filePart=file.getOriginalFilename().split("\\.");
         String dateTime=DateUtils.formatCurTime();
         String fileName=VIDEO+getRandomString(4)+dateTime+"."+filePart[filePart.length-1];
-        File f=new File(videoUrlPath+"video/"+fileName);
+        File f=new File(videoUrlPath+fileName);
         try {
             file.transferTo(f);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-        return url+fileName;
+        return url+"video/"+fileName;
     }
 
     private String getRandomString(int length){
