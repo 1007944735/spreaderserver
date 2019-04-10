@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface PubService {
-    int pub(RedPacket redPacket, Expand expand, List<MultipartFile> pictures, MultipartFile videos);
+    int pub(RedPacket redPacket, Expand expand, List<MultipartFile> pictures, MultipartFile videos,Integer orderId);
 
     List<RedPacketSearchDto> searchSearch(String longitude, String latitude, String orderType, String repacketType, String[] numbers, String[] amounts);
 

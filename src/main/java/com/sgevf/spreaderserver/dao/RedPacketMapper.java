@@ -1,7 +1,6 @@
 package com.sgevf.spreaderserver.dao;
 
 import com.sgevf.spreaderserver.entity.RedPacket;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Union;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -9,8 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface RedPacketMapper {
-    @Insert("insert into red_packet(amount,type,pub_longitude,pub_latitude,start_time,end_time,max_number,pub_address,puber_id,expand_id) " +
-            "values(#{amount},#{type},#{pubLongitude},#{pubLatitude},#{startTime},#{endTime},#{maxNumber},#{pubAddress},#{puberId},#{expandId})")
+    @Insert("insert into red_packet(amount,type,pub_longitude,pub_latitude,start_time,end_time,max_number,pub_address,puber_id,expand_id,order_id) " +
+            "values(#{amount},#{type},#{pubLongitude},#{pubLatitude},#{startTime},#{endTime},#{maxNumber},#{pubAddress},#{puberId},#{expandId},#{orderId})")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     int insertRedPacket(RedPacket redPacket);
 
@@ -44,7 +43,8 @@ public interface RedPacketMapper {
             @Result(column = "max_number", property = "maxNumber"),
             @Result(column = "pub_address", property = "pubAddress"),
             @Result(column = "puber_id", property = "puberId"),
-            @Result(column = "expand_id", property = "expandId")
+            @Result(column = "expand_id", property = "expandId"),
+            @Result(column = "order_id", property = "orderId")
     })
     RedPacket queryRedPacketById(@Param("id") int id);
 //
@@ -96,7 +96,8 @@ public interface RedPacketMapper {
             @Result(column = "max_number", property = "maxNumber"),
             @Result(column = "pub_address", property = "pubAddress"),
             @Result(column = "puber_id", property = "puberId"),
-            @Result(column = "expand_id", property = "expandId")
+            @Result(column = "expand_id", property = "expandId"),
+            @Result(column = "order_id", property = "orderId")
     })
     List<RedPacket> queryRedPacketSearch(String orderType,String redPacketType, String[] numbers, String[] amounts);
 

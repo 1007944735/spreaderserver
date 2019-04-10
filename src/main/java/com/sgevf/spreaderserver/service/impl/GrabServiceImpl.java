@@ -106,7 +106,7 @@ public class GrabServiceImpl implements GrabService {
         if ("1".equals(type)) {
             //是固定红包
             return residueMoney / residueNum;
-        } else if ("2".equals(type)) {
+        } else if ("0".equals(type)) {
             //是随机红包
             if (residueNum == 1) {
                 return residueMoney;

@@ -9,10 +9,7 @@ import com.sgevf.spreaderserver.entity.Expand;
 import com.sgevf.spreaderserver.entity.RedPacket;
 import com.sgevf.spreaderserver.entity.RedPacketHistory;
 import com.sgevf.spreaderserver.entity.User;
-import com.sgevf.spreaderserver.service.FileService;
-import com.sgevf.spreaderserver.service.PubService;
-import com.sgevf.spreaderserver.service.RedisService;
-import com.sgevf.spreaderserver.service.UserService;
+import com.sgevf.spreaderserver.service.*;
 import com.sgevf.spreaderserver.utils.MathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +39,9 @@ public class PubServiceImpl implements PubService {
     private UserService userService;
 
     @Autowired
+    private OrdersService ordersService;
+
+    @Autowired
     private RedPacketHistoryMapper redPacketHistoryMapper;
 
     private String[] urls;
@@ -58,7 +58,7 @@ public class PubServiceImpl implements PubService {
      */
     @Transactional
     @Override
-    public int pub(RedPacket redPacket, Expand expand, List<MultipartFile> pictures, MultipartFile video) {
+    public int pub(RedPacket redPacket, Expand expand, List<MultipartFile> pictures, MultipartFile video, Integer orderId) {
         urls = new String[6];
         e = expand;
         rp = redPacket;
@@ -91,6 +91,7 @@ public class PubServiceImpl implements PubService {
         if (rNum <= 0) {
             return -1;
         }
+        ordersService.updateOrderStatus(orderId);
         redisService.set(rp.getId() + "", rp.getAmount() + "", 3);
         redisService.set(rp.getId() + "", rp.getMaxNumber() + "", 4);
         return rp.getId();
@@ -119,12 +120,12 @@ public class PubServiceImpl implements PubService {
     }
 
     @Override
-    public RedPacketDetailsDto getRedPacketDetails(Integer userId,Integer redPacketId, String longitude, String latitude) {
+    public RedPacketDetailsDto getRedPacketDetails(Integer userId, Integer redPacketId, String longitude, String latitude) {
         RedPacketDetailsDto rpdd = new RedPacketDetailsDto();
-        RedPacketHistory history=redPacketHistoryMapper.queryHistoryByRobberIdAndRedPacketId(userId, redPacketId);
-        if(history!=null){
+        RedPacketHistory history = redPacketHistoryMapper.queryHistoryByRobberIdAndRedPacketId(userId, redPacketId);
+        if (history != null) {
             rpdd.setIsGrab("1");
-        }else {
+        } else {
             rpdd.setIsGrab("0");
         }
         RedPacket redPacket = redPacketMapper.queryRedPacketById(redPacketId);

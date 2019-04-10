@@ -14,6 +14,7 @@ public class RedPacket {
 
     private Integer puberId;
     private Integer expandId;
+    private Integer orderId;
 
     public Integer getPuberId() {
         return puberId;
@@ -110,5 +111,13 @@ public class RedPacket {
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 }

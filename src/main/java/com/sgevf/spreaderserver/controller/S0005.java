@@ -3,10 +3,12 @@ package com.sgevf.spreaderserver.controller;
 import com.sgevf.spreaderserver.entity.Expand;
 import com.sgevf.spreaderserver.entity.RedPacket;
 import com.sgevf.spreaderserver.entity.response.Response;
+import com.sgevf.spreaderserver.service.OrdersService;
 import com.sgevf.spreaderserver.service.PubService;
 import com.sgevf.spreaderserver.service.RedisService;
 import com.sgevf.spreaderserver.utils.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -36,12 +38,13 @@ public class S0005 {
             @RequestParam("pubAddress") String pubAddress,
             @RequestParam("title") String title,
             @RequestParam("info") String info,
-            @RequestParam(value = "video",required = false) MultipartFile video,
+            @RequestParam("orderId") int orderId,
+            @RequestParam(value = "video", required = false) MultipartFile video,
             HttpServletRequest request
     ) {
-        List<MultipartFile> pictures= ((MultipartHttpServletRequest) request).getFiles("pictures");
+        List<MultipartFile> pictures = ((MultipartHttpServletRequest) request).getFiles("pictures");
 
-        RedPacket redPacket=new RedPacket();
+        RedPacket redPacket = new RedPacket();
         redPacket.setAmount(Double.parseDouble(amount));
         redPacket.setType(type);
         redPacket.setPubLongitude(pubLongitude);
@@ -50,16 +53,17 @@ public class S0005 {
         redPacket.setEndTime(endTime);
         redPacket.setMaxNumber(Integer.parseInt(maxNumber));
         redPacket.setPubAddress(pubAddress);
-        redPacket.setPuberId(Integer.valueOf(redisService.get(token,1)));
+        redPacket.setPuberId(Integer.valueOf(redisService.get(token, 1)));
+        redPacket.setOrderId(orderId);
 
-        Expand expand=new Expand();
+        Expand expand = new Expand();
         expand.setTitle(title);
         expand.setInfo(info);
-        int id=pubService.pub(redPacket,expand,pictures,video);
-        if(id>0){
-            return new Response<>(HttpResponse.SUCCESS,"成功","");
-        }else {
-            return new Response<>(HttpResponse.ERROR,"发布失败","");
+        int id = pubService.pub(redPacket, expand, pictures, video,orderId);
+        if (id > 0) {
+            return new Response<>(HttpResponse.SUCCESS, "成功", "");
+        } else {
+            return new Response<>(HttpResponse.ERROR, "发布失败", "");
         }
     }
 }
