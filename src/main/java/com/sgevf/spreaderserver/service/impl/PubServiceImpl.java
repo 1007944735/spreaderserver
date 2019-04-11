@@ -58,7 +58,7 @@ public class PubServiceImpl implements PubService {
      */
     @Transactional
     @Override
-    public int pub(RedPacket redPacket, Expand expand, List<MultipartFile> pictures, MultipartFile video, Integer orderId) {
+    public int pub(RedPacket redPacket, Expand expand, List<MultipartFile> pictures, MultipartFile video) {
         urls = new String[6];
         e = expand;
         rp = redPacket;
@@ -91,7 +91,6 @@ public class PubServiceImpl implements PubService {
         if (rNum <= 0) {
             return -1;
         }
-        ordersService.updateOrderStatus(orderId);
         redisService.set(rp.getId() + "", rp.getAmount() + "", 3);
         redisService.set(rp.getId() + "", rp.getMaxNumber() + "", 4);
         return rp.getId();
@@ -153,6 +152,11 @@ public class PubServiceImpl implements PubService {
         d = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         rpdd.setDistance(d);
         return rpdd;
+    }
+
+    @Override
+    public int updateRedPacketOrderId(Integer redPacketId, Integer orderId) {
+        return redPacketMapper.updateRedPacketOrderId(redPacketId,orderId);
     }
 
     private List<RedPacketSearchDto> transform(List<RedPacket> redPackets, Point2D dot, boolean distance) {

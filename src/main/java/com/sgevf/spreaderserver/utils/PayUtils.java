@@ -3,6 +3,8 @@ package com.sgevf.spreaderserver.utils;
 public class PayUtils {
     //支付宝网关
     public static final String URL="https://openapi.alipay.com/gateway.do";
+    //支付宝异步通知地址
+    public static final String BACK_URL="http://47.103.8.72:8080/spreader/S0015";
     //APPID
     public static final String APP_ID="2016092800616091";
     //开发者应用私钥
@@ -17,6 +19,6 @@ public class PayUtils {
     public static final String SIGN_TYPE="RSA2";
     //销售产品码
     public static final String PRODUCT_CODE="QUICK_MSECURITY_PAY";
-
-
+    //买家支付宝UID
+    public static final String BUSINESS_UID="2088102177656027";
 }

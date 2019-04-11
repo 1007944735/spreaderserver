@@ -10,7 +10,9 @@ public interface AccountMapper {
             @Result(column = "id", property = "id"),
             @Result(column = "balance", property = "balance"),
             @Result(column = "alipay_account", property = "alipayAccount"),
-            @Result(column = "user_id", property = "userId")
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "alipay_head", property = "alipayHead"),
+            @Result(column = "alipay_name", property = "alipayName")
     })
     Account selectAccountById(@Param("id") int id);
 
@@ -25,7 +27,9 @@ public interface AccountMapper {
             @Result(column = "id", property = "id"),
             @Result(column = "balance", property = "balance"),
             @Result(column = "alipay_account", property = "alipayAccount"),
-            @Result(column = "user_id", property = "userId")
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "alipay_head", property = "alipayHead"),
+            @Result(column = "alipay_name", property = "alipayName")
     })
     Account selectAccountByUserId(@Param("user_id") int userId);
 }

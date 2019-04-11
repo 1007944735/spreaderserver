@@ -14,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class S0005 {
@@ -26,7 +28,7 @@ public class S0005 {
 
     @ResponseBody
     @RequestMapping(value = "/S0005", method = RequestMethod.POST)
-    public Response<String> s0005(
+    public Response<Map<String,String>> s0005(
             @RequestParam("token") String token,
             @RequestParam("type") String type,
             @RequestParam("amount") String amount,
@@ -38,7 +40,6 @@ public class S0005 {
             @RequestParam("pubAddress") String pubAddress,
             @RequestParam("title") String title,
             @RequestParam("info") String info,
-            @RequestParam("orderId") int orderId,
             @RequestParam(value = "video", required = false) MultipartFile video,
             HttpServletRequest request
     ) {
@@ -54,16 +55,18 @@ public class S0005 {
         redPacket.setMaxNumber(Integer.parseInt(maxNumber));
         redPacket.setPubAddress(pubAddress);
         redPacket.setPuberId(Integer.valueOf(redisService.get(token, 1)));
-        redPacket.setOrderId(orderId);
 
         Expand expand = new Expand();
         expand.setTitle(title);
         expand.setInfo(info);
-        int id = pubService.pub(redPacket, expand, pictures, video,orderId);
+        int id = pubService.pub(redPacket, expand, pictures, video);
         if (id > 0) {
-            return new Response<>(HttpResponse.SUCCESS, "成功", "");
+            Map<String,String> map=new HashMap<>();
+            map.put("id",""+id);
+            map.put("amount",amount);
+            return new Response<>(HttpResponse.SUCCESS, "成功", map);
         } else {
-            return new Response<>(HttpResponse.ERROR, "发布失败", "");
+            return new Response<>(HttpResponse.ERROR, "发布失败", null);
         }
     }
 }

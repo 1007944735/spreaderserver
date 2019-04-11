@@ -5,5 +5,5 @@ import com.sgevf.spreaderserver.entity.Orders;
 public interface OrdersService {
     int insertOrder(Orders orders);
 
-    int updateOrderStatus(int id);
+    int updateOrderStatus(String orderNo);
 }

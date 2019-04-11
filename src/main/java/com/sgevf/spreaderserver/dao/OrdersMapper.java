@@ -10,6 +10,6 @@ public interface OrdersMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insertOrder(Orders orders);
 
-    @Update("update orders set status='1' where id=#{id}")
-    int updateOrderStatus(@Param("id") int id);
+    @Update("update orders set status='1' where order_no=#{orderNo}")
+    int updateOrderStatus(@Param("orderNo") String orderNo);
 }

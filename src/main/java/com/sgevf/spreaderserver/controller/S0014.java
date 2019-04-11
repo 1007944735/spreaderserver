@@ -5,6 +5,7 @@ import com.sgevf.spreaderserver.entity.Orders;
 import com.sgevf.spreaderserver.entity.response.Response;
 import com.sgevf.spreaderserver.service.OrdersService;
 import com.sgevf.spreaderserver.service.PayService;
+import com.sgevf.spreaderserver.service.PubService;
 import com.sgevf.spreaderserver.utils.DateUtils;
 import com.sgevf.spreaderserver.utils.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +17,27 @@ public class S0014 {
     private PayService payService;
     @Autowired
     private OrdersService ordersService;
+    @Autowired
+    private PubService pubService;
 
     @ResponseBody
     @RequestMapping(value = "/S0014", method = RequestMethod.POST)
-    public Response<PayOrderDto> s0014(@RequestParam("amount") String amount) {
-        String order = "SGEVF" + DateUtils.formatCurTime();
-        String orderString = payService.pubPay(amount, order);
-        Orders o = new Orders();
-        o.setMoney(amount);
-        o.setOrderNo(order);
-        ordersService.insertOrder(o);
-        PayOrderDto dto = new PayOrderDto();
-        dto.setOrderString(orderString);
-        dto.setId(o.getId());
-        dto.setAmount(amount);
-        return new Response<>(HttpResponse.SUCCESS, "成功", dto);
+    public Response<PayOrderDto> s0014(@RequestParam("amount") String amount, @RequestParam("redPacketId") String redPacketId) {
+        try {
+            String order = "SGEVF" + DateUtils.formatCurTime();
+            String orderString = payService.pubPay(amount, order);
+            Orders o = new Orders();
+            o.setMoney(amount);
+            o.setOrderNo(order);
+            ordersService.insertOrder(o);
+            pubService.updateRedPacketOrderId(Integer.valueOf(redPacketId), o.getId());
+            PayOrderDto dto = new PayOrderDto();
+            dto.setOrderString(orderString);
+            dto.setId(o.getId());
+            dto.setAmount(amount);
+            return new Response<>(HttpResponse.SUCCESS, "成功", dto);
+        } catch (Exception e) {
+            return new Response<>(HttpResponse.ERROR, "系统错误", null);
+        }
     }
 }

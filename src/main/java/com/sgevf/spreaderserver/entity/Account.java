@@ -4,6 +4,8 @@ public class Account {
     private Integer id;
     private double balance;
     private String alipayAccount;
+    private String alipayHead;
+    private String alipayName;
 
     private Integer userId;
 
@@ -37,5 +39,21 @@ public class Account {
 
     public void setAlipayAccount(String alipayAccount) {
         this.alipayAccount = alipayAccount;
+    }
+
+    public String getAlipayHead() {
+        return alipayHead;
+    }
+
+    public void setAlipayHead(String alipayHead) {
+        this.alipayHead = alipayHead;
+    }
+
+    public String getAlipayName() {
+        return alipayName;
+    }
+
+    public void setAlipayName(String alipayName) {
+        this.alipayName = alipayName;
     }
 }

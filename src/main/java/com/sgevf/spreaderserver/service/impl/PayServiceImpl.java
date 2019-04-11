@@ -25,6 +25,7 @@ public class PayServiceImpl implements PayService {
         model.setTotalAmount(amount);
         model.setProductCode(PayUtils.PRODUCT_CODE);
         request.setBizModel(model);
+        request.setNotifyUrl(PayUtils.BACK_URL);
         try {
             AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
             System.out.println(response.getBody());
@@ -33,5 +34,10 @@ public class PayServiceImpl implements PayService {
             e.printStackTrace();
             return "";
         }
+    }
+
+    @Override
+    public void grantFromAli() {
+        alipayClient = new DefaultAlipayClient(PayUtils.URL, PayUtils.APP_ID, PayUtils.APP_PRIVATE_KEY, PayUtils.FORMAT, PayUtils.CHARSET, PayUtils.ALIPAY_PUBLIC_KEY, PayUtils.SIGN_TYPE);
     }
 }

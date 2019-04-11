@@ -160,4 +160,6 @@ public interface RedPacketMapper {
             }.toString();
         }
     }
+    @Update("update red_packet set order_id=#{orderId} where id=#{redPacketId}")
+    int updateRedPacketOrderId(@Param("redPacketId") int redPacketId,@Param("orderId") int orderId);
 }
