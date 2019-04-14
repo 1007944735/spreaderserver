@@ -4,7 +4,7 @@ import com.sgevf.spreaderserver.dto.PayOrderDto;
 import com.sgevf.spreaderserver.entity.Orders;
 import com.sgevf.spreaderserver.entity.response.Response;
 import com.sgevf.spreaderserver.service.OrdersService;
-import com.sgevf.spreaderserver.service.PayService;
+import com.sgevf.spreaderserver.service.AliService;
 import com.sgevf.spreaderserver.service.PubService;
 import com.sgevf.spreaderserver.utils.DateUtils;
 import com.sgevf.spreaderserver.utils.HttpResponse;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class S0014 {
     @Autowired
-    private PayService payService;
+    private AliService aliService;
     @Autowired
     private OrdersService ordersService;
     @Autowired
@@ -25,7 +25,7 @@ public class S0014 {
     public Response<PayOrderDto> s0014(@RequestParam("amount") String amount, @RequestParam("redPacketId") String redPacketId) {
         try {
             String order = "SGEVF" + DateUtils.formatCurTime();
-            String orderString = payService.pubPay(amount, order);
+            String orderString = aliService.pubPay(amount, order);
             Orders o = new Orders();
             o.setMoney(amount);
             o.setOrderNo(order);

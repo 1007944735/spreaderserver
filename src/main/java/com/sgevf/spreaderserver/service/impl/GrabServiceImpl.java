@@ -11,7 +11,6 @@ import com.sgevf.spreaderserver.entity.User;
 import com.sgevf.spreaderserver.service.GrabService;
 import com.sgevf.spreaderserver.service.RedisService;
 import com.sgevf.spreaderserver.service.ServiceModel;
-import com.sgevf.spreaderserver.service.UserService;
 import com.sgevf.spreaderserver.utils.DateUtils;
 import com.sgevf.spreaderserver.utils.MathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +79,7 @@ public class GrabServiceImpl implements GrabService {
             history.setRobMoney(money + "");
             redPacketHistoryMapper.insertHistory(history);
             //账户表上更新数据
-            accountMapper.updateBalance(money, userId);
+            accountMapper.increaseBalance(money, userId);
             if (num == 1) {
                 //更新redis 剩余红包个数
                 redisService.set(redPacketId + "", num - 1 + "", 4, 10, TimeUnit.MINUTES);

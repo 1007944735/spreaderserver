@@ -23,4 +23,14 @@ public class WithdrawHistoryServiceImpl implements WithdrawHistoryService {
         dto.setStatus(history.getStatus());
         return dto;
     }
+
+    @Override
+    public int insertWithdrawHistory(WithdrawHistory history) {
+        return withdrawHistoryMapper.insertWithdrawHistory(history);
+    }
+
+    @Override
+    public int updateSuccessStatus(Integer id) {
+        return withdrawHistoryMapper.updateSuccessStatus(id);
+    }
 }

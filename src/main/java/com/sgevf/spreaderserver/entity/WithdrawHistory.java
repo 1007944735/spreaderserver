@@ -7,6 +7,7 @@ public class WithdrawHistory {
     private String way;
     private String status;
     private String failReason;
+    private String withdrawOrder;
 
     private Integer takerId;
 
@@ -64,5 +65,13 @@ public class WithdrawHistory {
 
     public void setFailReason(String failReason) {
         this.failReason = failReason;
+    }
+
+    public String getWithdrawOrder() {
+        return withdrawOrder;
+    }
+
+    public void setWithdrawOrder(String withdrawOrder) {
+        this.withdrawOrder = withdrawOrder;
     }
 }

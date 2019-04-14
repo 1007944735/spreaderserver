@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountMapper accountMapper;
+
     @Override
     public Account selectAccountById(int id) {
         return accountMapper.selectAccountById(id);
@@ -21,12 +22,22 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public int updateBalance(double money, int userId) {
-        return accountMapper.updateBalance(money,userId);
+    public int increaseBalance(double money, int userId) {
+        return accountMapper.increaseBalance(money, userId);
+    }
+
+    @Override
+    public int reduceBalance(double money, int userId) {
+        return accountMapper.reduceBalance(money,userId);
     }
 
     @Override
     public Account selectAccountByUserId(int userId) {
         return accountMapper.selectAccountByUserId(userId);
+    }
+
+    @Override
+    public int bindAlipayAccount(String alipayAccount, String alipayHead, String alipayName, int userId) {
+        return accountMapper.updateAlipayAccount(alipayAccount, alipayHead, alipayName, userId);
     }
 }

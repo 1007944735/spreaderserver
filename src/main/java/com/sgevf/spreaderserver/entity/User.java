@@ -8,6 +8,7 @@ public class User {
     private String headPortrait;
     private String phone;
     private String registerDate;
+    private String isBusiness;
 
     public Integer getId() {
         return id;
@@ -63,5 +64,13 @@ public class User {
 
     public void setRegisterDate(String registerDate) {
         this.registerDate = registerDate;
+    }
+
+    public String getIsBusiness() {
+        return isBusiness;
+    }
+
+    public void setIsBusiness(String isBusiness) {
+        this.isBusiness = isBusiness;
     }
 }

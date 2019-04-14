@@ -3,6 +3,8 @@ package com.sgevf.spreaderserver.dao;
 import com.sgevf.spreaderserver.entity.Account;
 import org.apache.ibatis.annotations.*;
 
+import javax.annotation.security.PermitAll;
+
 @Mapper
 public interface AccountMapper {
     @Select("select * from account where id=#{id}")
@@ -20,7 +22,10 @@ public interface AccountMapper {
     int insertAccount(@Param("user_id") int userId);
 
     @Update("update account set balance=balance+#{money} where user_id=#{userId}")
-    int updateBalance(@Param("money") double money, @Param("userId") int userId);
+    int increaseBalance(@Param("money") double money, @Param("userId") int userId);
+
+    @Update("update account set balance=balance-#{money} where user_id=#{userId}")
+    int reduceBalance(@Param("money") double money, @Param("userId") int userId);
 
     @Select("select * from account where user_id=#{user_id}")
     @Results({
@@ -32,4 +37,7 @@ public interface AccountMapper {
             @Result(column = "alipay_name", property = "alipayName")
     })
     Account selectAccountByUserId(@Param("user_id") int userId);
+
+    @Update("update account set alipay_account=#{alipayAccount},alipay_head=#{alipayHead},alipay_name=#{alipayName} where user_id=#{userId}")
+    int updateAlipayAccount(@Param("alipayAccount") String alipayAccount, @Param("alipayHead") String alipayHead, @Param("alipayName") String alipayName, @Param("userId") int userId);
 }

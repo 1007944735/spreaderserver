@@ -7,7 +7,11 @@ public interface AccountService {
 
     int insertAccount(int userId);
 
-    int updateBalance(double money, int userId);
+    int increaseBalance(double money, int userId);
+
+    int reduceBalance(double money, int userId);
 
     Account selectAccountByUserId(int userId);
+
+    int bindAlipayAccount(String alipayAccount, String alipayHead, String alipayName, int userId);
 }
