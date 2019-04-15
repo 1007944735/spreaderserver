@@ -10,6 +10,8 @@ public class WithdrawHistoryDto {
     private String way;
     private String status;
     private String failReason;
+    private String withdrawOrder;
+    private String alipayOrder;
 
     public Integer getId() {
         return id;
@@ -57,5 +59,21 @@ public class WithdrawHistoryDto {
 
     public void setFailReason(String failReason) {
         this.failReason = failReason;
+    }
+
+    public String getWithdrawOrder() {
+        return withdrawOrder;
+    }
+
+    public void setWithdrawOrder(String withdrawOrder) {
+        this.withdrawOrder = withdrawOrder;
+    }
+
+    public String getAlipayOrder() {
+        return alipayOrder;
+    }
+
+    public void setAlipayOrder(String alipayOrder) {
+        this.alipayOrder = alipayOrder;
     }
 }

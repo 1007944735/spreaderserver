@@ -25,6 +25,23 @@ public interface WithdrawHistoryMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insertWithdrawHistory(WithdrawHistory withdrawHistory);
 
-    @Update("update withdraw_history set status='1' where id=#{id}")
-    int updateSuccessStatus(Integer id);
+    @Update("update withdraw_history set status=#{status} where withdraw_order=#{order}")
+    int updateSuccessStatus(@Param("order") String order, @Param("status") String status);
+
+    @Update("update withdraw_history set status=#{status},fail_reason=#{failReason} where withdraw_order=#{order}")
+    int updateFailStatus(@Param("order") String order, @Param("status") String status, @Param("failReason") String failReason);
+
+
+    @Select("select * from withdraw_history where withdraw_order=#{order}")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "taker_id", property = "takerId"),
+            @Result(column = "money", property = "money"),
+            @Result(column = "time", property = "time"),
+            @Result(column = "way", property = "way"),
+            @Result(column = "status", property = "status"),
+            @Result(column = "fail_reason", property = "failReason"),
+            @Result(column = "withdraw_order", property = "withdrawOrder"),
+    })
+    WithdrawHistory queryWithdrawHistoryByOrder(@Param("order") String order);
 }

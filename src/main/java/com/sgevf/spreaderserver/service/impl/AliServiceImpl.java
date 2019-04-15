@@ -3,18 +3,14 @@ package com.sgevf.spreaderserver.service.impl;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayFundTransOrderQueryModel;
 import com.alipay.api.domain.AlipayFundTransToaccountTransferModel;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
-import com.alipay.api.request.AlipaySystemOauthTokenRequest;
-import com.alipay.api.request.AlipayTradeAppPayRequest;
-import com.alipay.api.request.AlipayUserInfoShareRequest;
-import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
-import com.alipay.api.response.AlipaySystemOauthTokenResponse;
-import com.alipay.api.response.AlipayTradeAppPayResponse;
-import com.alipay.api.response.AlipayUserInfoShareResponse;
+import com.alipay.api.request.*;
+import com.alipay.api.response.*;
 import com.sgevf.spreaderserver.dto.AlipayUserInfoDto;
+import com.sgevf.spreaderserver.dto.TransQueryDto;
 import com.sgevf.spreaderserver.service.AliService;
 import com.sgevf.spreaderserver.service.WithdrawHistoryService;
 import com.sgevf.spreaderserver.utils.PayUtils;
@@ -30,9 +26,6 @@ import java.util.TreeMap;
 @Service
 public class AliServiceImpl implements AliService {
     private AlipayClient alipayClient;
-
-    @Autowired
-    private WithdrawHistoryService withdrawHistoryService;
 
     @Override
     public String pubPay(String amount, String order) {
@@ -90,8 +83,7 @@ public class AliServiceImpl implements AliService {
             request.setGrantType("authorization_code");
             request.setCode(authCode);
             AlipaySystemOauthTokenResponse response = alipayClient.execute(request);
-            JSONObject obj = new JSONObject(response.getBody());
-            return obj.optString("access_token");
+            return response.getAccessToken();
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
@@ -120,29 +112,47 @@ public class AliServiceImpl implements AliService {
     }
 
     @Override
-    public int transferAccounts(String order,String payeeAccount, String amount,int id) {
+    public int transferAccounts(String order, String payeeAccount, String amount) {
         try {
             alipayClient = new DefaultAlipayClient(PayUtils.URL, PayUtils.APP_ID, PayUtils.APP_PRIVATE_KEY, PayUtils.FORMAT, PayUtils.CHARSET, PayUtils.ALIPAY_PUBLIC_KEY, PayUtils.SIGN_TYPE);
             AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
-            AlipayFundTransToaccountTransferModel model=new AlipayFundTransToaccountTransferModel();
+            AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
             model.setOutBizNo(order);
-            model.setPayeeType("ALIPAY_LOGONID");
+            model.setPayeeType("ALIPAY_USERID");
             model.setPayeeAccount(payeeAccount);
             model.setAmount(amount);
             model.setPayerShowName("红包提现转账");
             request.setBizModel(model);
             AlipayFundTransToaccountTransferResponse response = alipayClient.execute(request);
-            if(response.isSuccess()){
-                withdrawHistoryService.updateSuccessStatus(id);
+            if (response.isSuccess()) {
                 return 0;
-            }else if("20000".equals(response.getCode())||("40000".equals(response.getCode())&&"SYSTEM_ERROR".equals(response.getSubCode()))){
-                return -1;
-            }else {
-                return -2;
             }
         } catch (AlipayApiException e) {
             e.printStackTrace();
-            return -2;
         }
+        return -1;
+    }
+
+    @Override
+    public TransQueryDto queryTrans(String outBizNo) {
+        try {
+            alipayClient = new DefaultAlipayClient(PayUtils.URL, PayUtils.APP_ID, PayUtils.APP_PRIVATE_KEY, PayUtils.FORMAT, PayUtils.CHARSET, PayUtils.ALIPAY_PUBLIC_KEY, PayUtils.SIGN_TYPE);
+            AlipayFundTransOrderQueryRequest request = new AlipayFundTransOrderQueryRequest();
+            AlipayFundTransOrderQueryModel model = new AlipayFundTransOrderQueryModel();
+            model.setOutBizNo(outBizNo);
+            request.setBizModel(model);
+            AlipayFundTransOrderQueryResponse response = alipayClient.execute(request);
+            TransQueryDto dto = new TransQueryDto();
+            dto.setOrderId(response.getOrderId());
+            dto.setStatus(response.getStatus());
+            dto.setPayDate(response.getPayDate());
+            dto.setFailReason(response.getFailReason());
+            dto.setOutBizNo(response.getOutBizNo());
+            dto.setErrorCode(response.getErrorCode());
+            return dto;
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

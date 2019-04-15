@@ -10,5 +10,7 @@ public interface WithdrawHistoryService {
 
     int insertWithdrawHistory(WithdrawHistory history);
 
-    int updateSuccessStatus(Integer id);
+    int updateStatus(String order,String status,String failReason);
+
+    WithdrawHistoryDto queryWithdrawHistoryByOrder(String order);
 }

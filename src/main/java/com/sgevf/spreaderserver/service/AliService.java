@@ -1,6 +1,7 @@
 package com.sgevf.spreaderserver.service;
 
 import com.sgevf.spreaderserver.dto.AlipayUserInfoDto;
+import com.sgevf.spreaderserver.dto.TransQueryDto;
 
 public interface AliService {
     String pubPay(String amount, String order);
@@ -11,5 +12,7 @@ public interface AliService {
 
     AlipayUserInfoDto getAliUserInfo(String accessToken);
 
-    int transferAccounts(String order,String payeeAccount,String amount,int id);
+    int transferAccounts(String order,String payeeAccount,String amount);
+
+    TransQueryDto queryTrans(String outBizNo);
 }

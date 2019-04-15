@@ -7,13 +7,13 @@ import com.sgevf.spreaderserver.utils.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 public class S0017 {
-    @Autowired
-    private AliService aliService;
     @Autowired
     private RedisService redisService;
 
@@ -21,14 +21,14 @@ public class S0017 {
     @RequestMapping(value = "/S0017", method = RequestMethod.POST)
     public Response<Map<String, String>> s0017(@RequestParam("token") String token) {
         String userId = redisService.get(token, 1);
-        String authInfo = aliService.getAlipayAuthInfo(userId);
-        if (!authInfo.isEmpty()) {
-            Map<String, String> map = new HashMap<>();
-//            map.put("url", "https://openauth.alipaydev.com/oauth2/publicAppAuthorize.htm?app_id=2016092800616091&scope=auth_user&redirect_uri=http://47.103.8.72:8080/spreader/S0018&state="+userId);
-            map.put("authInfo",authInfo);
+        Map<String, String> map = new HashMap<>();
+        String url = "https://openauth.alipaydev.com/oauth2/publicAppAuthorize.htm?app_id=2016092800616091&scope=auth_user&redirect_uri=http://47.103.8.72:8080/spreader/S0018&state=" + userId;
+        try {
+            map.put("url", "alipays://platformapi/startapp?appId=20000067&url=" + URLEncoder.encode(url, "utf-8"));
             return new Response<>(HttpResponse.SUCCESS, "成功", map);
-        } else {
-            return new Response<>(HttpResponse.ERROR, "生成authInfo错误", null);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return new Response<>(HttpResponse.ERROR, "系统错误", null);
         }
     }
 }
