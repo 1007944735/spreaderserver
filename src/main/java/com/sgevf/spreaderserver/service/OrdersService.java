@@ -6,4 +6,6 @@ public interface OrdersService {
     int insertOrder(Orders orders);
 
     int updateOrderStatus(String orderNo);
+
+    Orders queryOrderById(Integer id);
 }

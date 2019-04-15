@@ -111,4 +111,22 @@ public interface RedPacketMapper {
 
     @Update("update red_packet set order_id=#{orderId} where id=#{redPacketId}")
     int updateRedPacketOrderId(@Param("redPacketId") int redPacketId, @Param("orderId") int orderId);
+
+    @Select("select * from red_packet where puber_id=#{puberId}")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "amount", property = "amount"),
+            @Result(column = "type", property = "type"),
+            @Result(column = "pub_time", property = "pubTime"),
+            @Result(column = "pub_longitude", property = "pubLongitude"),
+            @Result(column = "pub_latitude", property = "pubLatitude"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime"),
+            @Result(column = "max_number", property = "maxNumber"),
+            @Result(column = "pub_address", property = "pubAddress"),
+            @Result(column = "puber_id", property = "puberId"),
+            @Result(column = "expand_id", property = "expandId"),
+            @Result(column = "order_id", property = "orderId")
+    })
+    List<RedPacket> queryRedPacketByPuberId(@Param("puberId") Integer puberId);
 }

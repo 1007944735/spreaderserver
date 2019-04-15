@@ -20,4 +20,9 @@ public class OrdersServiceImpl implements OrdersService {
     public int updateOrderStatus(String orderNo) {
         return ordersMapper.updateOrderStatus(orderNo);
     }
+
+    @Override
+    public Orders queryOrderById(Integer id) {
+        return ordersMapper.queryOrderById(id);
+    }
 }

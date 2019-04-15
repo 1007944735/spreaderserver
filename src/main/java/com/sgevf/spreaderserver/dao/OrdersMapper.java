@@ -12,4 +12,13 @@ public interface OrdersMapper {
 
     @Update("update orders set status='1' where order_no=#{orderNo}")
     int updateOrderStatus(@Param("orderNo") String orderNo);
+    @Select("select * from orders where id=#{id}")
+    @Results({
+            @Result(column = "id",property = "id"),
+            @Result(column = "order_no",property = "orderNo"),
+            @Result(column = "create_time",property = "createTime"),
+            @Result(column = "status",property = "status"),
+            @Result(column = "money",property = "money"),
+    })
+    Orders queryOrderById(@Param("id") Integer id);
 }

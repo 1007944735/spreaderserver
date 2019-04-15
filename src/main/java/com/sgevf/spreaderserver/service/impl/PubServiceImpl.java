@@ -1,24 +1,29 @@
 package com.sgevf.spreaderserver.service.impl;
 
 import com.sgevf.spreaderserver.dao.ExpandMapper;
+import com.sgevf.spreaderserver.dao.OrdersMapper;
 import com.sgevf.spreaderserver.dao.RedPacketHistoryMapper;
 import com.sgevf.spreaderserver.dao.RedPacketMapper;
+import com.sgevf.spreaderserver.dto.HistoryReleaseDto;
 import com.sgevf.spreaderserver.dto.RedPacketDetailsDto;
 import com.sgevf.spreaderserver.dto.RedPacketSearchDto;
-import com.sgevf.spreaderserver.entity.Expand;
-import com.sgevf.spreaderserver.entity.RedPacket;
-import com.sgevf.spreaderserver.entity.RedPacketHistory;
-import com.sgevf.spreaderserver.entity.User;
+import com.sgevf.spreaderserver.entity.*;
 import com.sgevf.spreaderserver.service.*;
+import com.sgevf.spreaderserver.utils.DateUtils;
 import com.sgevf.spreaderserver.utils.MathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,7 +44,7 @@ public class PubServiceImpl implements PubService {
     private UserService userService;
 
     @Autowired
-    private OrdersService ordersService;
+    private OrdersMapper ordersMapper;
 
     @Autowired
     private RedPacketHistoryMapper redPacketHistoryMapper;
@@ -156,7 +161,59 @@ public class PubServiceImpl implements PubService {
 
     @Override
     public int updateRedPacketOrderId(Integer redPacketId, Integer orderId) {
-        return redPacketMapper.updateRedPacketOrderId(redPacketId,orderId);
+        return redPacketMapper.updateRedPacketOrderId(redPacketId, orderId);
+    }
+
+    @Override
+    public List<HistoryReleaseDto> queryRedPacketByPuberId(Integer puberId) {
+        List<HistoryReleaseDto> hrds = new ArrayList<>();
+        List<RedPacket> dtos = redPacketMapper.queryRedPacketByPuberId(puberId);
+        for (RedPacket redPacket : dtos) {
+            HistoryReleaseDto dto = new HistoryReleaseDto();
+            dto.setId(redPacket.getId());
+            dto.setAmount(redPacket.getAmount() + "");
+            dto.setType(redPacket.getType());
+            dto.setPubTime(redPacket.getPubTime());
+            dto.setPubLongitude(redPacket.getPubLongitude());
+            dto.setPubLatitude(redPacket.getPubLatitude());
+            dto.setStartTime(redPacket.getStartTime());
+            dto.setEndTime(redPacket.getEndTime());
+            dto.setMaxNumber(redPacket.getMaxNumber() + "");
+            dto.setPubAddress(redPacket.getPubAddress());
+            long cur = System.currentTimeMillis();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            long start = 0;
+            long end = 0;
+            try {
+                start = sdf.parse(redPacket.getStartTime()).getTime();
+                end = sdf.parse(redPacket.getEndTime()).getTime();
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+            if (cur < start) {
+                dto.setActiviting("0");
+            } else if (cur > end) {
+                dto.setActiviting("-1");
+            } else {
+                dto.setActiviting("1");
+            }
+            Expand expand = expandMapper.queryExpandById(redPacket.getExpandId());
+            dto.setTitle(expand.getTitle());
+            dto.setInfo(expand.getInfo());
+            dto.setVideoUrl(expand.getVideoUrl());
+            dto.setImage1Url(expand.getImage1Url());
+            dto.setImage2Url(expand.getImage2Url());
+            dto.setImage3Url(expand.getImage3Url());
+            dto.setImage4Url(expand.getImage4Url());
+            dto.setImage5Url(expand.getImage5Url());
+            dto.setImage6Url(expand.getImage6Url());
+            Orders orders = ordersMapper.queryOrderById(redPacket.getOrderId());
+            dto.setOrderNo(orders.getOrderNo());
+            dto.setCreateTime(orders.getCreateTime());
+            dto.setStatus(orders.getStatus());
+            hrds.add(dto);
+        }
+        return hrds;
     }
 
     private List<RedPacketSearchDto> transform(List<RedPacket> redPackets, Point2D dot, boolean distance) {
