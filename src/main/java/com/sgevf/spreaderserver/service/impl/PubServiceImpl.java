@@ -190,13 +190,6 @@ public class PubServiceImpl implements PubService {
             } catch (ParseException e1) {
                 e1.printStackTrace();
             }
-            if (cur < start) {
-                dto.setActiviting("0");
-            } else if (cur > end) {
-                dto.setActiviting("-1");
-            } else {
-                dto.setActiviting("1");
-            }
             Expand expand = expandMapper.queryExpandById(redPacket.getExpandId());
             dto.setTitle(expand.getTitle());
             dto.setInfo(expand.getInfo());
@@ -211,6 +204,17 @@ public class PubServiceImpl implements PubService {
             dto.setOrderNo(orders.getOrderNo());
             dto.setCreateTime(orders.getCreateTime());
             dto.setStatus(orders.getStatus());
+            if ("-1".equals(orders.getStatus())) {
+                dto.setActiviting("-2");
+            } else {
+                if (cur < start) {
+                    dto.setActiviting("0");
+                } else if (cur > end) {
+                    dto.setActiviting("-1");
+                } else {
+                    dto.setActiviting("1");
+                }
+            }
             hrds.add(dto);
         }
         return hrds;

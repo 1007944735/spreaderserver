@@ -53,9 +53,9 @@ public interface RedPacketMapper {
         public String queryRedPacketSearch(String orderType, String redPacketType, String[] numbers, String[] amounts) {
             return new SQL() {
                 {
-                    SELECT("id", "amount", "type", "pub_time", "pub_longitude", "pub_latitude", "start_time");
+                    SELECT("red_packet.id", "amount", "type", "pub_time", "pub_longitude", "pub_latitude", "start_time");
                     SELECT("end_time", "max_number", "pub_address", "puber_id", "expand_id");
-                    FROM("red_packet");
+                    FROM("red_packet,orders");
                     if (redPacketType != null && !redPacketType.isEmpty()) {
                         WHERE("type='" + redPacketType + "'");
                     }
@@ -99,6 +99,9 @@ public interface RedPacketMapper {
                         sb.append(")");
                         WHERE(sb.toString());
                     }
+                    WHERE("orders.id=red_packet.order_id");
+                    WHERE("orders.status!='0'");
+                    WHERE("orders.status!='-1'");
                     if ("1".equals(orderType)) {
                         ORDER_BY("max_number desc");
                     } else if ("2".equals(orderType)) {

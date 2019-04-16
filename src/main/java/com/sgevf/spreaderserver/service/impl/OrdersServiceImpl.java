@@ -17,8 +17,8 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public int updateOrderStatus(String orderNo) {
-        return ordersMapper.updateOrderStatus(orderNo);
+    public int updateOrderStatus(String orderNo,String status) {
+        return ordersMapper.updateOrderStatus(orderNo,status);
     }
 
     @Override

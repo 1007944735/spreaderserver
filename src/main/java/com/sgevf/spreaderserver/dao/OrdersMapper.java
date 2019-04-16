@@ -10,15 +10,16 @@ public interface OrdersMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insertOrder(Orders orders);
 
-    @Update("update orders set status='1' where order_no=#{orderNo}")
-    int updateOrderStatus(@Param("orderNo") String orderNo);
+    @Update("update orders set status=#{status} where order_no=#{orderNo}")
+    int updateOrderStatus(@Param("orderNo") String orderNo,@Param("status") String status);
+
     @Select("select * from orders where id=#{id}")
     @Results({
-            @Result(column = "id",property = "id"),
-            @Result(column = "order_no",property = "orderNo"),
-            @Result(column = "create_time",property = "createTime"),
-            @Result(column = "status",property = "status"),
-            @Result(column = "money",property = "money"),
+            @Result(column = "id", property = "id"),
+            @Result(column = "order_no", property = "orderNo"),
+            @Result(column = "create_time", property = "createTime"),
+            @Result(column = "status", property = "status"),
+            @Result(column = "money", property = "money"),
     })
     Orders queryOrderById(@Param("id") Integer id);
 }

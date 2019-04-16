@@ -1,5 +1,8 @@
 package com.sgevf.spreaderserver.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HistoryReleaseDto {
     private int id;
     private String amount;

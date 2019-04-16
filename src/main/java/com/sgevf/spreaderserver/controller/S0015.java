@@ -37,7 +37,7 @@ public class S0015 {
             boolean flag = AlipaySignature.rsaCheckV1(params, PayUtils.ALIPAY_PUBLIC_KEY, PayUtils.CHARSET, "RSA2");
             if(flag){
                 String orderNo=params.get("out_trade_no");
-                ordersService.updateOrderStatus(orderNo);
+                ordersService.updateOrderStatus(orderNo,"1");
             }
         } catch (AlipayApiException e) {
             e.printStackTrace();

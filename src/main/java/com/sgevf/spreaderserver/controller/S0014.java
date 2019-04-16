@@ -22,21 +22,24 @@ public class S0014 {
 
     @ResponseBody
     @RequestMapping(value = "/S0014", method = RequestMethod.POST)
-    public Response<PayOrderDto> s0014(@RequestParam("amount") String amount, @RequestParam("redPacketId") String redPacketId) {
+    public Response<PayOrderDto> s0014(@RequestParam("amount") String amount, @RequestParam("redPacketId") String redPacketId, @RequestParam(value = "order", required = false) String order) {
         try {
-            String order = "SGEVF" + DateUtils.formatCurTime();
-            String orderString = aliService.pubPay(amount, order);
-            Orders o = new Orders();
-            o.setMoney(amount);
-            o.setOrderNo(order);
-            ordersService.insertOrder(o);
-            pubService.updateRedPacketOrderId(Integer.valueOf(redPacketId), o.getId());
             PayOrderDto dto = new PayOrderDto();
+            if (order.isEmpty()) {
+                order = "SGEVF" + DateUtils.formatCurTime();
+                Orders o = new Orders();
+                o.setMoney(amount);
+                o.setOrderNo(order);
+                ordersService.insertOrder(o);
+                pubService.updateRedPacketOrderId(Integer.valueOf(redPacketId), o.getId());
+            }
+            String orderString = aliService.pubPay(amount, order);
             dto.setOrderString(orderString);
-            dto.setId(o.getId());
+//            dto.setId(o.getId());
             dto.setAmount(amount);
             return new Response<>(HttpResponse.SUCCESS, "成功", dto);
         } catch (Exception e) {
+            e.printStackTrace();
             return new Response<>(HttpResponse.ERROR, "系统错误", null);
         }
     }
