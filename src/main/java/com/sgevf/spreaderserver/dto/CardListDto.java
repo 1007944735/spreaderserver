@@ -1,19 +1,19 @@
-package com.sgevf.spreaderserver.entity;
+package com.sgevf.spreaderserver.dto;
 
-public class Card {
-    private Integer id;
+public class CardListDto {
+    private int id;
     private String discountRule;
     private String useRule;
     private String startTime;
     private String effectiveTime;
-    private Integer businessId;
     private String status;
+    private String sellerName;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -49,19 +49,19 @@ public class Card {
         this.effectiveTime = effectiveTime;
     }
 
-    public Integer getBusinessId() {
-        return businessId;
-    }
-
-    public void setBusinessId(Integer businessId) {
-        this.businessId = businessId;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
     }
 }

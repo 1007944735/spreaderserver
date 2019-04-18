@@ -27,7 +27,8 @@ public interface RedPacketMapper {
             @Result(column = "pub_address", property = "pubAddress"),
             @Result(column = "puber_id", property = "puberId"),
             @Result(column = "expand_id", property = "expandId"),
-            @Result(column = "order_id", property = "orderId")
+            @Result(column = "order_id", property = "orderId"),
+            @Result(column = "card_num", property = "cardNum")
     })
     RedPacket queryRedPacketById(@Param("id") int id);
 
@@ -45,7 +46,8 @@ public interface RedPacketMapper {
             @Result(column = "pub_address", property = "pubAddress"),
             @Result(column = "puber_id", property = "puberId"),
             @Result(column = "expand_id", property = "expandId"),
-            @Result(column = "order_id", property = "orderId")
+            @Result(column = "order_id", property = "orderId"),
+            @Result(column = "card_num", property = "cardNum")
     })
     List<RedPacket> queryRedPacketSearch(String orderType, String redPacketType, String[] numbers, String[] amounts);
 
@@ -129,7 +131,8 @@ public interface RedPacketMapper {
             @Result(column = "pub_address", property = "pubAddress"),
             @Result(column = "puber_id", property = "puberId"),
             @Result(column = "expand_id", property = "expandId"),
-            @Result(column = "order_id", property = "orderId")
+            @Result(column = "order_id", property = "orderId"),
+            @Result(column = "card_num", property = "cardNum")
     })
     List<RedPacket> queryRedPacketByPuberId(@Param("puberId") Integer puberId);
 }

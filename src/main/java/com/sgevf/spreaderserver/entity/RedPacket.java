@@ -11,6 +11,7 @@ public class RedPacket {
     private String endTime;
     private Integer maxNumber;
     private String pubAddress;
+    private String cardNum;
 
     private Integer puberId;
     private Integer expandId;
@@ -119,5 +120,13 @@ public class RedPacket {
 
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
+    }
+
+    public String getCardNum() {
+        return cardNum;
+    }
+
+    public void setCardNum(String cardNum) {
+        this.cardNum = cardNum;
     }
 }
