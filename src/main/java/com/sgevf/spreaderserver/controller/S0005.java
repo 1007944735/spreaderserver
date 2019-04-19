@@ -40,6 +40,7 @@ public class S0005 {
             @RequestParam("pubAddress") String pubAddress,
             @RequestParam("title") String title,
             @RequestParam("info") String info,
+            @RequestParam("cardNum") String cardNum,
             @RequestParam(value = "video", required = false) MultipartFile video,
             HttpServletRequest request
     ) {
@@ -54,6 +55,7 @@ public class S0005 {
         redPacket.setEndTime(endTime);
         redPacket.setMaxNumber(Integer.parseInt(maxNumber));
         redPacket.setPubAddress(pubAddress);
+        redPacket.setCardNum(cardNum);
         redPacket.setPuberId(Integer.valueOf(redisService.get(token, 1)));
 
         Expand expand = new Expand();

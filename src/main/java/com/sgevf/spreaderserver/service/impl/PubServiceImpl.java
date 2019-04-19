@@ -1,29 +1,26 @@
 package com.sgevf.spreaderserver.service.impl;
 
-import com.sgevf.spreaderserver.dao.ExpandMapper;
-import com.sgevf.spreaderserver.dao.OrdersMapper;
-import com.sgevf.spreaderserver.dao.RedPacketHistoryMapper;
-import com.sgevf.spreaderserver.dao.RedPacketMapper;
+import com.sgevf.spreaderserver.dao.*;
 import com.sgevf.spreaderserver.dto.HistoryReleaseDto;
 import com.sgevf.spreaderserver.dto.RedPacketDetailsDto;
 import com.sgevf.spreaderserver.dto.RedPacketSearchDto;
 import com.sgevf.spreaderserver.entity.*;
-import com.sgevf.spreaderserver.service.*;
-import com.sgevf.spreaderserver.utils.DateUtils;
+import com.sgevf.spreaderserver.service.FileService;
+import com.sgevf.spreaderserver.service.PubService;
+import com.sgevf.spreaderserver.service.RedisService;
+import com.sgevf.spreaderserver.service.UserService;
 import com.sgevf.spreaderserver.utils.MathUtils;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -48,6 +45,9 @@ public class PubServiceImpl implements PubService {
 
     @Autowired
     private RedPacketHistoryMapper redPacketHistoryMapper;
+
+    @Autowired
+    private CardMapper cardMapper;
 
     private String[] urls;
 
@@ -133,6 +133,12 @@ public class PubServiceImpl implements PubService {
             rpdd.setIsGrab("0");
         }
         RedPacket redPacket = redPacketMapper.queryRedPacketById(redPacketId);
+        if("-1".equals(redPacket.getCardNum())){
+            String[] cardIds=redPacket.getCardNum().split(",");
+            cardMapper.queryListById(cardIds);
+        }else {
+            
+        }
         User sponser = userService.queryUserById(redPacket.getPuberId());
         Expand expand = expandMapper.queryExpandById(redPacket.getExpandId());
         Point2D a = new Point2D.Double(Double.valueOf(longitude), Double.valueOf(latitude));

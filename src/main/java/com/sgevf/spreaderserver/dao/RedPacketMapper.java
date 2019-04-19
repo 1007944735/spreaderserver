@@ -8,8 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface RedPacketMapper {
-    @Insert("insert into red_packet(amount,type,pub_longitude,pub_latitude,start_time,end_time,max_number,pub_address,puber_id,expand_id,order_id) " +
-            "values(#{amount},#{type},#{pubLongitude},#{pubLatitude},#{startTime},#{endTime},#{maxNumber},#{pubAddress},#{puberId},#{expandId},#{orderId})")
+    @Insert("insert into red_packet(amount,type,pub_longitude,pub_latitude,start_time,end_time,max_number,pub_address,puber_id,expand_id,order_id,card_num) " +
+            "values(#{amount},#{type},#{pubLongitude},#{pubLatitude},#{startTime},#{endTime},#{maxNumber},#{pubAddress},#{puberId},#{expandId},#{orderId},#{cardNum})")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     int insertRedPacket(RedPacket redPacket);
 

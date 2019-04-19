@@ -2,6 +2,7 @@ package com.sgevf.spreaderserver.dao;
 
 import com.sgevf.spreaderserver.entity.Card;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.jdbc.SQL;
 
 import java.util.List;
 
@@ -25,4 +26,26 @@ public interface CardMapper {
     @Insert("insert into card(discount_rule,use_rule,start_time,effective_time,business_id) values(#{discountRule},#{useRule},#{startTime},#{effectiveTime},#{businessId})")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     int insertCard(Card card);
+
+    @SelectProvider(type = QueryListByIdProvider.class, method = "queryListById")
+    List<Card> queryListById(String[] cardIds);
+
+    class QueryListByIdProvider {
+        public String queryListById(String[] cardIds) {
+            return new SQL() {
+                {
+                    SELECT("*");
+                    FROM("card");
+                    for (int i = 0; i < cardIds.length; i++) {
+                        if (i != cardIds.length - 1) {
+                            WHERE("id=" + cardIds[i]);
+                            OR();
+                        } else {
+                            WHERE("id=" + cardIds[i]);
+                        }
+                    }
+                }
+            }.toString();
+        }
+    }
 }
