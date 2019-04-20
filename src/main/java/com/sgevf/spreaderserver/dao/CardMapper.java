@@ -28,7 +28,16 @@ public interface CardMapper {
     int insertCard(Card card);
 
     @SelectProvider(type = QueryListByIdProvider.class, method = "queryListById")
-    List<Card> queryListById(String[] cardIds);
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "discount_rule", property = "discountRule"),
+            @Result(column = "use_rule", property = "useRule"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "effective_time", property = "effectiveTime"),
+            @Result(column = "business_id", property = "businessId"),
+            @Result(column = "status", property = "status")
+    })
+    List<Card> queryListById(@Param("cardIds") String[] cardIds);
 
     class QueryListByIdProvider {
         public String queryListById(String[] cardIds) {

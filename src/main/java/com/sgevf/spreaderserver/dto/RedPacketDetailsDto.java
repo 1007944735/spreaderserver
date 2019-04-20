@@ -165,4 +165,12 @@ public class RedPacketDetailsDto {
     public void setInfo(String info) {
         this.info = info;
     }
+
+    public List<CardListDto> getList() {
+        return list;
+    }
+
+    public void setList(List<CardListDto> list) {
+        this.list = list;
+    }
 }

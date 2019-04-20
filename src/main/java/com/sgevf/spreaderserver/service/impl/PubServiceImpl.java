@@ -1,6 +1,7 @@
 package com.sgevf.spreaderserver.service.impl;
 
 import com.sgevf.spreaderserver.dao.*;
+import com.sgevf.spreaderserver.dto.CardListDto;
 import com.sgevf.spreaderserver.dto.HistoryReleaseDto;
 import com.sgevf.spreaderserver.dto.RedPacketDetailsDto;
 import com.sgevf.spreaderserver.dto.RedPacketSearchDto;
@@ -133,11 +134,24 @@ public class PubServiceImpl implements PubService {
             rpdd.setIsGrab("0");
         }
         RedPacket redPacket = redPacketMapper.queryRedPacketById(redPacketId);
-        if("-1".equals(redPacket.getCardNum())){
-            String[] cardIds=redPacket.getCardNum().split(",");
-            cardMapper.queryListById(cardIds);
-        }else {
-            
+        if ("-1".equals(redPacket.getCardNum())) {
+            rpdd.setList(new ArrayList<>());
+        } else {
+            String[] cardIds = redPacket.getCardNum().split(",");
+            List<Card> cards = cardMapper.queryListById(cardIds);
+            List<CardListDto> cardListDtos = new ArrayList<>();
+            for (Card card : cards) {
+                CardListDto cardListDto = new CardListDto();
+                cardListDto.setId(card.getId());
+                cardListDto.setDiscountRule(card.getDiscountRule());
+                cardListDto.setUseRule(card.getUseRule());
+                cardListDto.setStartTime(card.getStartTime());
+                cardListDto.setEffectiveTime(card.getEffectiveTime());
+                cardListDto.setStatus(card.getStatus());
+                //商家姓名
+                cardListDtos.add(cardListDto);
+            }
+            rpdd.setList(cardListDtos);
         }
         User sponser = userService.queryUserById(redPacket.getPuberId());
         Expand expand = expandMapper.queryExpandById(redPacket.getExpandId());
