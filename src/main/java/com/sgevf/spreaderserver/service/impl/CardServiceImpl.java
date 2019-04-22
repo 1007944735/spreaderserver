@@ -27,4 +27,9 @@ public class CardServiceImpl implements CardService {
     public int insertCard(Card card) {
         return cardMapper.insertCard(card);
     }
+
+    @Override
+    public Card queryCardById(int id) {
+        return cardMapper.queryCardById(id);
+    }
 }

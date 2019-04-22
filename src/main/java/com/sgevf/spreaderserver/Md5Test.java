@@ -1,26 +1,27 @@
 package com.sgevf.spreaderserver;
 
-import com.sgevf.spreaderserver.utils.RSAUtils;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.sgevf.spreaderserver.utils.DateUtils;
+import sun.awt.geom.AreaOp;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
 public class Md5Test {
     public static void main(String[] args) {
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println(format.format(date));
-        String str = "13|13";
-        String[] strings = str.split("\\|");
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date d = sdf.parse("0000-00-02 00:00:00");
-        } catch (ParseException e) {
-            e.printStackTrace();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(DateUtils.string2Date("2019-04-22 13:41:35"));
+        Date et = DateUtils.string2Date("0000-00-01 00:00:00");
+        if (et.getDay() != 0) {
+            calendar.add(Calendar.DATE, et.getDay());
         }
+        if (et.getHours() != 0) {
+            calendar.add(Calendar.HOUR, et.getHours());
+        }
+        if (et.getMinutes() != 0) {
+            calendar.add(Calendar.MINUTE, et.getMinutes());
+        }
+        Calendar etCalendar = Calendar.getInstance();
+        etCalendar.setTime(DateUtils.string2Date("2019-11-08 10:58:00"));
+        System.out.println(calendar.compareTo(etCalendar)==-1 ? DateUtils.date2String(calendar.getTime()) : "2019-11-08 10:58:00");
     }
 }

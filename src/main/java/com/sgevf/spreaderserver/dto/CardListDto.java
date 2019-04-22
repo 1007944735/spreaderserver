@@ -8,7 +8,9 @@ public class CardListDto {
     private String discountRule;
     private String useRule;
     private String startTime;
+    private String effectiveStartTime;
     private String effectiveTime;
+    private String endTime;
     private String status;
     private String sellerName;
 
@@ -66,5 +68,21 @@ public class CardListDto {
 
     public void setSellerName(String sellerName) {
         this.sellerName = sellerName;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public String getEffectiveStartTime() {
+        return effectiveStartTime;
+    }
+
+    public void setEffectiveStartTime(String effectiveStartTime) {
+        this.effectiveStartTime = effectiveStartTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

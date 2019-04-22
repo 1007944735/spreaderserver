@@ -13,7 +13,8 @@ public interface UserMapper {
             @Result(column = "nickname", property = "nickname"),
             @Result(column = "head_portrait", property = "headPortrait"),
             @Result(column = "register_date", property = "registerDate"),
-            @Result(column = "phone", property = "phone")
+            @Result(column = "phone", property = "phone"),
+            @Result(column = "is_business",property = "isBusiness")
     })
     User findUserById(@Param("id") Integer id);
 
@@ -25,7 +26,8 @@ public interface UserMapper {
             @Result(column = "nickname", property = "nickname"),
             @Result(column = "head_portrait", property = "headPortrait"),
             @Result(column = "register_date", property = "registerDate"),
-            @Result(column = "phone", property = "phone")
+            @Result(column = "phone", property = "phone"),
+            @Result(column = "is_business",property = "isBusiness")
     })
     User findUserByUsername(@Param("username") String username);
 

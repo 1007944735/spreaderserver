@@ -10,8 +10,14 @@ import org.springframework.stereotype.Service;
 public class BusinessServiceImpl implements BusinessService {
     @Autowired
     private BusinessMapper businessMapper;
+
     @Override
     public Business queryBusinessByUserId(int userId) {
         return businessMapper.queryBusinessByUserId(userId);
+    }
+
+    @Override
+    public Business queryBusinessById(int id) {
+        return businessMapper.queryBusinessById(id);
     }
 }

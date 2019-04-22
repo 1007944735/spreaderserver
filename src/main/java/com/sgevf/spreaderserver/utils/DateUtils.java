@@ -38,4 +38,24 @@ public class DateUtils {
         }
         return 0;
     }
+
+    public static String long2String(long time) {
+        Date date = new Date(time);
+        SimpleDateFormat sdf = new SimpleDateFormat(NORMAL);
+        return sdf.format(date);
+    }
+
+    public static Date string2Date(String time) {
+        SimpleDateFormat sdf = new SimpleDateFormat(NORMAL);
+        try {
+            return sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static String date2String(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat(NORMAL);
+        return sdf.format(date);
+    }
 }

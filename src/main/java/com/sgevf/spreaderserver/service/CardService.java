@@ -10,4 +10,6 @@ public interface CardService {
     int deleteCard(int id);
 
     int insertCard(Card card);
+
+    Card queryCardById(int id);
 }

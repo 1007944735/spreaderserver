@@ -1,10 +1,9 @@
 package com.sgevf.spreaderserver.service.impl;
 
-import com.sgevf.spreaderserver.dao.AccountMapper;
-import com.sgevf.spreaderserver.dao.RedPacketHistoryMapper;
-import com.sgevf.spreaderserver.dao.RedPacketMapper;
-import com.sgevf.spreaderserver.dao.UserMapper;
+import com.sgevf.spreaderserver.dao.*;
+import com.sgevf.spreaderserver.dto.CardListDto;
 import com.sgevf.spreaderserver.dto.GrabResultDto;
+import com.sgevf.spreaderserver.entity.Card;
 import com.sgevf.spreaderserver.entity.RedPacket;
 import com.sgevf.spreaderserver.entity.RedPacketHistory;
 import com.sgevf.spreaderserver.entity.User;
@@ -20,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -31,11 +30,14 @@ public class GrabServiceImpl implements GrabService {
     private RedisService redisService;
     @Autowired
     private RedPacketHistoryMapper redPacketHistoryMapper;
-
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CardMapper cardMapper;
+    @Autowired
+    private UserCardMapper userCardMapper;
 
     @Transactional
     @Override
@@ -57,11 +59,11 @@ public class GrabServiceImpl implements GrabService {
             return new ServiceModel<>(-2, null);
         }
         RedPacketHistory rph = redPacketHistoryMapper.queryHistoryByRobberIdAndRedPacketId(userId, redPacketId);
+        User user = userMapper.findUserById(redPacket.getPuberId());
+        grabResultDto.setName(user.getNickname());
         if (rph != null) {
             //已经抢过该红包
             grabResultDto.setMoney(rph.getRobMoney());
-            User user=userMapper.findUserById(redPacket.getPuberId());
-            grabResultDto.setName(user.getNickname());
             return new ServiceModel<>(200, grabResultDto);
         }
         synchronized (this) {
@@ -93,7 +95,54 @@ public class GrabServiceImpl implements GrabService {
             }
             grabResultDto.setMoney(money + "");
         }
+        if ("-1".equals(redPacket.getCardNum())) {
+            grabResultDto.setList(new ArrayList<>());
+        } else {
+            List<CardListDto> listDtos = new ArrayList<>();
+            String[] cardIds = redPacket.getCardNum().split(",");
+            //当前时间
+            String ct = DateUtils.formatCurTimeByNormal();
+            for (String id : cardIds) {
+                int i = (int) (Math.random() * 2);
+                if (i == 0) {
+                    //为0，选中
+                    Card card = cardMapper.queryCardById(Integer.valueOf(id));
+                    CardListDto cardListDto = new CardListDto();
+                    cardListDto.setId(card.getId());
+                    cardListDto.setDiscountRule(card.getDiscountRule());
+                    cardListDto.setUseRule(card.getUseRule());
+                    cardListDto.setStartTime(card.getStartTime());
+                    cardListDto.setEffectiveStartTime(ct);
+                    cardListDto.setEffectiveTime(card.getEffectiveTime());
+                    cardListDto.setStatus(card.getStatus());
+                    //优惠券失效时间
+                    String p_et = actualEndTime(ct, redPacket.getEndTime(), card.getEffectiveTime());
+                    userCardMapper.insertUserCards(card.getId(), userId, ct, p_et, redPacketId);
+                    cardListDto.setEndTime(p_et);
+                    listDtos.add(cardListDto);
+                }
+            }
+            grabResultDto.setList(listDtos);
+        }
         return new ServiceModel<>(200, grabResultDto);
+    }
+
+    private String actualEndTime(String curTime, String endTime, String effectiveTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(DateUtils.string2Date(curTime));
+        Date et = DateUtils.string2Date(effectiveTime);
+        if (et.getDay() != 0) {
+            calendar.add(Calendar.DATE, et.getDay());
+        }
+        if (et.getHours() != 0) {
+            calendar.add(Calendar.HOUR, et.getHours());
+        }
+        if (et.getMinutes() != 0) {
+            calendar.add(Calendar.MINUTE, et.getMinutes());
+        }
+        Calendar etCalendar = Calendar.getInstance();
+        etCalendar.setTime(DateUtils.string2Date(endTime));
+        return calendar.compareTo(etCalendar) == -1 ? DateUtils.date2String(calendar.getTime()) : effectiveTime;
     }
 
     /**

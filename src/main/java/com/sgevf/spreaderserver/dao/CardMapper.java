@@ -57,4 +57,16 @@ public interface CardMapper {
             }.toString();
         }
     }
+
+    @Select("select * from card where id=#{id}")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "discount_rule", property = "discountRule"),
+            @Result(column = "use_rule", property = "useRule"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "effective_time", property = "effectiveTime"),
+            @Result(column = "business_id", property = "businessId"),
+            @Result(column = "status", property = "status")
+    })
+    Card queryCardById(@Param("id") int id);
 }

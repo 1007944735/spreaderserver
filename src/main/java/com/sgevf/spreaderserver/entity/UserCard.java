@@ -7,6 +7,7 @@ public class UserCard {
     private String isUse;
     private String getTime;
     private String endTime;
+    private Integer redPacketId;
 
     public Integer getId() {
         return id;
@@ -54,5 +55,13 @@ public class UserCard {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public Integer getRedPacketId() {
+        return redPacketId;
+    }
+
+    public void setRedPacketId(Integer redPacketId) {
+        this.redPacketId = redPacketId;
     }
 }
