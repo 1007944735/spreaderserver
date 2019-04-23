@@ -1,37 +1,38 @@
 package com.sgevf.spreaderserver.controller;
 
-import com.sgevf.spreaderserver.dto.HistoryReleaseDto;
+import com.sgevf.spreaderserver.dto.HomeAdvertisingListDto;
 import com.sgevf.spreaderserver.entity.response.Response;
 import com.sgevf.spreaderserver.service.PubService;
-import com.sgevf.spreaderserver.service.RedisService;
 import com.sgevf.spreaderserver.utils.HttpResponse;
+import jdk.nashorn.internal.runtime.linker.LinkerCallSite;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-public class S0021 {
-    @Autowired
-    private RedisService redisService;
-
+public class S0032 {
     @Autowired
     private PubService pubService;
 
     @ResponseBody
-    @RequestMapping(value = "/S0021", method = RequestMethod.POST)
-    public Response<Map<String, List<HistoryReleaseDto>>> s0021(@RequestParam("token") String token, @RequestParam(value = "type", defaultValue = "0") String type) {
+    @RequestMapping(value = "/S0032", method = RequestMethod.POST)
+    public Response<Map<String, List<HomeAdvertisingListDto>>> s0032() {
         try {
-            Map<String, List<HistoryReleaseDto>> map = new HashMap<>();
-            String userId = redisService.get(token, 1);
-            List<HistoryReleaseDto> list = pubService.queryRedPacketByPuberId(Integer.valueOf(userId),type);
+            Map<String, List<HomeAdvertisingListDto>> map = new HashMap<>();
+            List<HomeAdvertisingListDto> list = pubService.search();
             map.put("list", list);
             return new Response<>(HttpResponse.SUCCESS, "成功", map);
         } catch (Exception e) {
             e.printStackTrace();
             return new Response<>(HttpResponse.ERROR, "系统错误", null);
         }
+
+
     }
 }

@@ -135,4 +135,23 @@ public interface RedPacketMapper {
             @Result(column = "card_num", property = "cardNum")
     })
     List<RedPacket> queryRedPacketByPuberId(@Param("puberId") Integer puberId);
+
+    @Select("select * from red_packet,orders where orders.id=red_packet.order_id and orders.status!='0' and orders.status!='-1'")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "amount", property = "amount"),
+            @Result(column = "type", property = "type"),
+            @Result(column = "pub_time", property = "pubTime"),
+            @Result(column = "pub_longitude", property = "pubLongitude"),
+            @Result(column = "pub_latitude", property = "pubLatitude"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime"),
+            @Result(column = "max_number", property = "maxNumber"),
+            @Result(column = "pub_address", property = "pubAddress"),
+            @Result(column = "puber_id", property = "puberId"),
+            @Result(column = "expand_id", property = "expandId"),
+            @Result(column = "order_id", property = "orderId"),
+            @Result(column = "card_num", property = "cardNum")
+    })
+    List<RedPacket> query();
 }

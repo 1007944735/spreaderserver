@@ -21,4 +21,19 @@ public interface UserCardMapper {
             @Result(column = "red_packet_id", property = "redPacketId")
     })
     List<UserCard> queryUserCardByUserId(@Param("userId") int userId);
+
+    @Update("update user_card set is_use='1' where id=#{id}")
+    int updateIsUse(@Param("id") int id);
+
+    @Select("select * from user_card where id=#{id}")
+    @Results(value = {
+            @Result(column = "id", property = "id"),
+            @Result(column = "card_id", property = "cardId"),
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "is_use", property = "isUse"),
+            @Result(column = "get_time", property = "getTime"),
+            @Result(column = "end_time", property = "endTime"),
+            @Result(column = "red_packet_id", property = "redPacketId")
+    })
+    UserCard queryUserCardById(@Param("id") int id);
 }

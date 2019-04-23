@@ -1,10 +1,7 @@
 package com.sgevf.spreaderserver.service.impl;
 
 import com.sgevf.spreaderserver.dao.*;
-import com.sgevf.spreaderserver.dto.CardListDto;
-import com.sgevf.spreaderserver.dto.HistoryReleaseDto;
-import com.sgevf.spreaderserver.dto.RedPacketDetailsDto;
-import com.sgevf.spreaderserver.dto.RedPacketSearchDto;
+import com.sgevf.spreaderserver.dto.*;
 import com.sgevf.spreaderserver.entity.*;
 import com.sgevf.spreaderserver.service.FileService;
 import com.sgevf.spreaderserver.service.PubService;
@@ -185,7 +182,7 @@ public class PubServiceImpl implements PubService {
     }
 
     @Override
-    public List<HistoryReleaseDto> queryRedPacketByPuberId(Integer puberId) {
+    public List<HistoryReleaseDto> queryRedPacketByPuberId(Integer puberId, String type) {
         List<HistoryReleaseDto> hrds = new ArrayList<>();
         List<RedPacket> dtos = redPacketMapper.queryRedPacketByPuberId(puberId);
         for (RedPacket redPacket : dtos) {
@@ -235,9 +232,46 @@ public class PubServiceImpl implements PubService {
                     dto.setActiviting("1");
                 }
             }
-            hrds.add(dto);
+            if ("1".equals(type)) {
+                if ("1".equals(dto.getActiviting()) && !"-1".equals(redPacket.getCardNum())) {
+                    hrds.add(dto);
+                }
+            } else {
+                hrds.add(dto);
+            }
         }
         return hrds;
+    }
+
+    @Override
+    public List<HomeAdvertisingListDto> search() {
+        List<RedPacket> redPackets = redPacketMapper.query();
+        List<HomeAdvertisingListDto> result = new ArrayList<>();
+        for (RedPacket redPacket : redPackets) {
+            HomeAdvertisingListDto searchDto = new HomeAdvertisingListDto();
+            searchDto.setId(redPacket.getId());
+            searchDto.setAmount(redPacket.getAmount());
+            searchDto.setType(redPacket.getType());
+            searchDto.setPubTime(redPacket.getPubTime());
+            searchDto.setPubLongitude(redPacket.getPubLongitude());
+            searchDto.setPubLatitude(redPacket.getPubLatitude());
+            searchDto.setStartTime(redPacket.getStartTime());
+            searchDto.setEndTime(redPacket.getEndTime());
+            searchDto.setMaxNumber(redPacket.getMaxNumber());
+            searchDto.setPubAddress(redPacket.getPubAddress());
+            Expand e = expandMapper.queryExpandById(redPacket.getExpandId());
+            searchDto.setTitle(e.getTitle());
+            searchDto.setInfo(e.getInfo());
+            searchDto.setVideoUrl(e.getVideoUrl());
+            searchDto.setImage1Url(e.getImage1Url());
+            searchDto.setImage2Url(e.getImage2Url());
+            searchDto.setImage3Url(e.getImage3Url());
+            searchDto.setImage4Url(e.getImage4Url());
+            searchDto.setImage5Url(e.getImage5Url());
+            searchDto.setImage6Url(e.getImage6Url());
+            result.add(searchDto);
+        }
+        return result;
     }
 
     private List<RedPacketSearchDto> transform(List<RedPacket> redPackets, Point2D dot, boolean distance) {

@@ -1,6 +1,7 @@
 package com.sgevf.spreaderserver.service;
 
 import com.sgevf.spreaderserver.dto.HistoryReleaseDto;
+import com.sgevf.spreaderserver.dto.HomeAdvertisingListDto;
 import com.sgevf.spreaderserver.dto.RedPacketDetailsDto;
 import com.sgevf.spreaderserver.dto.RedPacketSearchDto;
 import com.sgevf.spreaderserver.entity.Expand;
@@ -18,5 +19,7 @@ public interface PubService {
 
     int updateRedPacketOrderId(Integer redPacketId,Integer orderId);
 
-    List<HistoryReleaseDto> queryRedPacketByPuberId(Integer puberId);
+    List<HistoryReleaseDto> queryRedPacketByPuberId(Integer puberId,String type);
+
+    List<HomeAdvertisingListDto> search();
 }

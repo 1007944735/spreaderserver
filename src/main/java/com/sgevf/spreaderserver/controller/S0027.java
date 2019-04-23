@@ -39,7 +39,7 @@ public class S0027 {
             String userId = redisService.get(token, 1);
             List<UserCard> cards = userCardService.queryUserCardByUserId(Integer.valueOf(userId));
             for (UserCard card : cards) {
-                Card c = cardService.queryCardById(card.getId());
+                Card c = cardService.queryCardById(Integer.valueOf(card.getCardId()));
                 if (compare(card.getEndTime()) != -1 && "0".equals(card.getIsUse())) {
                     if (!box.containsKey(c.getBusinessId())) {
                         Business business = businessService.queryBusinessById(c.getBusinessId());
@@ -49,7 +49,7 @@ public class S0027 {
                         dto.setSellerLogo(business.getbLogo());
                         List<UserCouponCardsDto.Coupon> coupons = new ArrayList<>();
                         UserCouponCardsDto.Coupon coupon = new UserCouponCardsDto.Coupon();
-                        coupon.setId(c.getId());
+                        coupon.setId(card.getId());
                         coupon.setGetTime(card.getGetTime());
                         coupon.setEndTime(card.getEndTime());
                         coupon.setDiscountRule(c.getDiscountRule());
@@ -61,7 +61,7 @@ public class S0027 {
                     } else {
                         UserCouponCardsDto dto = box.get(c.getBusinessId());
                         UserCouponCardsDto.Coupon coupon = new UserCouponCardsDto.Coupon();
-                        coupon.setId(c.getId());
+                        coupon.setId(card.getId());
                         coupon.setGetTime(card.getGetTime());
                         coupon.setEndTime(card.getEndTime());
                         coupon.setDiscountRule(c.getDiscountRule());
