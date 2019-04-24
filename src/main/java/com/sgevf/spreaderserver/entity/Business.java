@@ -11,6 +11,7 @@ public class Business {
     private String b_address;
     private String bSocialCredit;
     private String bContext;
+    private String bPhone;
 
     private Integer userId;
 
@@ -100,5 +101,13 @@ public class Business {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getbPhone() {
+        return bPhone;
+    }
+
+    public void setbPhone(String bPhone) {
+        this.bPhone = bPhone;
     }
 }

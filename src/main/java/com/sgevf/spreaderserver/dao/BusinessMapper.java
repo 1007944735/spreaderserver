@@ -17,7 +17,8 @@ public interface BusinessMapper {
             @Result(column = "b_idcard_back",property = "bIdcardBack"),
             @Result(column = "b_address",property = "b_address"),
             @Result(column = "b_social_credit",property = "bSocialCredit"),
-            @Result(column = "b_context",property = "bContext")
+            @Result(column = "b_context",property = "bContext"),
+            @Result(column = "b_phone",property = "bPhone")
     })
     Business queryBusinessByUserId(@Param("userId") int userId);
 
@@ -33,7 +34,8 @@ public interface BusinessMapper {
             @Result(column = "b_idcard_back",property = "bIdcardBack"),
             @Result(column = "b_address",property = "b_address"),
             @Result(column = "b_social_credit",property = "bSocialCredit"),
-            @Result(column = "b_context",property = "bContext")
+            @Result(column = "b_context",property = "bContext"),
+            @Result(column = "b_phone",property = "bPhone")
     })
     Business queryBusinessById(@Param("id") int id);
 }
