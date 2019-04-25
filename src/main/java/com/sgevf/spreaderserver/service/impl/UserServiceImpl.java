@@ -83,4 +83,9 @@ public class UserServiceImpl implements UserService {
     public int updatePassword(int id,String password) {
         return mapper.updatePassword(id,password);
     }
+
+    @Override
+    public int updateIsBusiness(int id, String isBusiness) {
+        return mapper.updateIsBusiness(id,isBusiness);
+    }
 }

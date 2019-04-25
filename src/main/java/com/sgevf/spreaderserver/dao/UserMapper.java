@@ -14,7 +14,7 @@ public interface UserMapper {
             @Result(column = "head_portrait", property = "headPortrait"),
             @Result(column = "register_date", property = "registerDate"),
             @Result(column = "phone", property = "phone"),
-            @Result(column = "is_business",property = "isBusiness")
+            @Result(column = "is_business", property = "isBusiness")
     })
     User findUserById(@Param("id") Integer id);
 
@@ -27,7 +27,7 @@ public interface UserMapper {
             @Result(column = "head_portrait", property = "headPortrait"),
             @Result(column = "register_date", property = "registerDate"),
             @Result(column = "phone", property = "phone"),
-            @Result(column = "is_business",property = "isBusiness")
+            @Result(column = "is_business", property = "isBusiness")
     })
     User findUserByUsername(@Param("username") String username);
 
@@ -43,4 +43,7 @@ public interface UserMapper {
 
     @Update("update user set password=#{password} where id=#{id}")
     int updatePassword(@Param("id") int id, @Param("password") String password);
+
+    @Update("update user set is_business=#{isBusiness} where id=#{id}")
+    int updateIsBusiness(@Param("id") int id, @Param("isBusiness") String isBusiness);
 }

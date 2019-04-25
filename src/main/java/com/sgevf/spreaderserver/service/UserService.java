@@ -12,4 +12,6 @@ public interface UserService {
     int updateUser(String nickname, String phone, String type, String token);
 
     int updatePassword(int id,String password);
+
+    int updateIsBusiness(int id,String isBusiness);
 }

@@ -15,8 +15,8 @@ import java.util.Random;
  */
 @Service
 public class FileServiceImpl implements FileService {
-    private static String PICTURE="picture";
-    private static String VIDEO="video";
+    private static String PICTURE = "picture";
+    private static String VIDEO = "video";
 
     //图片存放路径
     @Value("${picture-url-path}")
@@ -24,51 +24,72 @@ public class FileServiceImpl implements FileService {
     //视频存放路径
     @Value("${video-url-path}")
     private String videoUrlPath;
+    //文件存放路径
+    @Value("${file-url-path}")
+    private String fileUrlPath;
 
     @Value("${url}")
     private String url;
 
     @Override
     public String uploadImage(MultipartFile file) {
-        if(file==null){
+        if (file == null) {
             return "";
         }
-        String[] filePart=file.getOriginalFilename().split("\\.");
-        String dateTime=DateUtils.formatCurTime();
-        String fileName=PICTURE+getRandomString(4)+dateTime+"."+filePart[filePart.length-1];
-        File f=new File(pictureUrlPath+fileName);
+        String[] filePart = file.getOriginalFilename().split("\\.");
+        String dateTime = DateUtils.formatCurTime();
+        String fileName = PICTURE + getRandomString(4) + dateTime + "." + filePart[filePart.length - 1];
+        File f = new File(pictureUrlPath + fileName);
         try {
             file.transferTo(f);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-        return url+"picture/"+fileName;
+        return url + "picture/" + fileName;
     }
 
     @Override
     public String uploadVideo(MultipartFile file) {
-        if(file==null){
+        if (file == null) {
             return "";
         }
-        String[] filePart=file.getOriginalFilename().split("\\.");
-        String dateTime=DateUtils.formatCurTime();
-        String fileName=VIDEO+getRandomString(4)+dateTime+"."+filePart[filePart.length-1];
-        File f=new File(videoUrlPath+fileName);
+        String[] filePart = file.getOriginalFilename().split("\\.");
+        String dateTime = DateUtils.formatCurTime();
+        String fileName = VIDEO + getRandomString(4) + dateTime + "." + filePart[filePart.length - 1];
+        File f = new File(videoUrlPath + fileName);
         try {
             file.transferTo(f);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-        return url+"video/"+fileName;
+        return url + "video/" + fileName;
     }
 
-    private String getRandomString(int length){
-        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random=new Random();
-        StringBuffer sb=new StringBuffer();
-        for(int i=0;i<length;i++){
+    @Override
+    public String uploadFile(MultipartFile file) {
+        if (file == null) {
+            return "";
+        }
+        String[] filePart = file.getOriginalFilename().split("\\.");
+        String dateTime = DateUtils.formatCurTime();
+        String fileName = "file" + getRandomString(4) + dateTime + "." + filePart[filePart.length - 1];
+        File f = new File(fileUrlPath+fileName);
+        try {
+            file.transferTo(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return url+"file/"+fileName;
+    }
+
+    private String getRandomString(int length) {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
             sb.append(str.charAt(random.nextInt(62)));
         }
         return sb.toString();

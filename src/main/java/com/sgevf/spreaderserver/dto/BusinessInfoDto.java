@@ -1,6 +1,9 @@
-package com.sgevf.spreaderserver.entity;
+package com.sgevf.spreaderserver.dto;
 
-public class Business {
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class BusinessInfoDto {
     private Integer id;
     private String bName;
     private String bTime;
@@ -10,10 +13,9 @@ public class Business {
     private String bIdcardBack;
     private String bAddress;
     private String bSocialCredit;
-    private String bContent;
     private String bPhone;
-
-    private Integer userId;
+    private String bContent;
+    private String status;
 
     public Integer getId() {
         return id;
@@ -87,6 +89,14 @@ public class Business {
         this.bSocialCredit = bSocialCredit;
     }
 
+    public String getbPhone() {
+        return bPhone;
+    }
+
+    public void setbPhone(String bPhone) {
+        this.bPhone = bPhone;
+    }
+
     public String getbContent() {
         return bContent;
     }
@@ -95,19 +105,11 @@ public class Business {
         this.bContent = bContent;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getStatus() {
+        return status;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getbPhone() {
-        return bPhone;
-    }
-
-    public void setbPhone(String bPhone) {
-        this.bPhone = bPhone;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

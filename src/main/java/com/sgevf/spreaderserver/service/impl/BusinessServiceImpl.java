@@ -20,4 +20,14 @@ public class BusinessServiceImpl implements BusinessService {
     public Business queryBusinessById(int id) {
         return businessMapper.queryBusinessById(id);
     }
+
+    @Override
+    public int insertBusiness(Business business) {
+        return businessMapper.insertBusiness(business);
+    }
+
+    @Override
+    public int updateBusiness(Business business) {
+        return businessMapper.updateBusiness(business);
+    }
 }
