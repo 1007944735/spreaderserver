@@ -5,23 +5,30 @@ import sun.awt.geom.AreaOp;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class Md5Test {
     public static void main(String[] args) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.string2Date("2019-04-22 13:41:35"));
-        Date et = DateUtils.string2Date("0000-00-01 00:00:00");
-        if (et.getDay() != 0) {
-            calendar.add(Calendar.DATE, et.getDay());
+        double all = 100;
+        int num = 10;
+        double[] money=new double[10];
+        double mm=0;
+        for (int i = 0; i < num; i++) {
+            if (i == num - 1) {
+                System.out.println("第" + i + "个：" + all);
+                money[i]=all;
+            } else {
+//                double maxNumber = all - 0.01 * (num - 1 - i);
+                double maxNumber = all/(num-i)*2;
+                double actual = (maxNumber - 0.01) * new Random().nextDouble() + 0.01;
+                all = all - actual;
+                money[i]=actual;
+                System.out.println("第" + i + "个：" + actual);
+            }
         }
-        if (et.getHours() != 0) {
-            calendar.add(Calendar.HOUR, et.getHours());
+        for(int i=0;i<money.length;i++){
+            mm=mm+money[i];
         }
-        if (et.getMinutes() != 0) {
-            calendar.add(Calendar.MINUTE, et.getMinutes());
-        }
-        Calendar etCalendar = Calendar.getInstance();
-        etCalendar.setTime(DateUtils.string2Date("2019-11-08 10:58:00"));
-        System.out.println(calendar.compareTo(etCalendar)==-1 ? DateUtils.date2String(calendar.getTime()) : "2019-11-08 10:58:00");
+        System.out.println("总共：" + mm);
     }
 }

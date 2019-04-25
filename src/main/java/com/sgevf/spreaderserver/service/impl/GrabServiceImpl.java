@@ -161,7 +161,8 @@ public class GrabServiceImpl implements GrabService {
             }
             if (isLook) {
                 //看过视频广告
-                double max = residueMoney - (residueNum - 1) * 0.01;
+//                double max = residueMoney - (residueNum - 1) * 0.01;
+                double max = residueMoney/residueNum*2;
                 double actual = (max - 0.01) * new Random().nextDouble() + 0.01;
                 BigDecimal bd = new BigDecimal(actual);
                 return bd.setScale(2, RoundingMode.DOWN).doubleValue();
