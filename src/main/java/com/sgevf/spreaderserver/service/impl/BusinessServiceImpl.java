@@ -1,10 +1,13 @@
 package com.sgevf.spreaderserver.service.impl;
 
 import com.sgevf.spreaderserver.dao.BusinessMapper;
+import com.sgevf.spreaderserver.dto.ManageBusinessDto;
 import com.sgevf.spreaderserver.entity.Business;
 import com.sgevf.spreaderserver.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BusinessServiceImpl implements BusinessService {
@@ -29,5 +32,10 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public int updateBusiness(Business business) {
         return businessMapper.updateBusiness(business);
+    }
+
+    @Override
+    public List<ManageBusinessDto> queryBusiness() {
+        return businessMapper.queryBusiness();
     }
 }

@@ -19,6 +19,7 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(logInterceptor).addPathPatterns("/**");
         registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/error","/S0000","/S0001","/S0002","/S0003","/S0015","/S0031","/S0032")
-                .excludePathPatterns("/T0000");
+                .excludePathPatterns("/T0000")
+                .excludePathPatterns("/V0001");
     }
 }

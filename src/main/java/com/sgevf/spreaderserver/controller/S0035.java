@@ -53,7 +53,7 @@ public class S0035 {
                 b.setbPhone(bPhone);
                 b.setbContent(bContent);
                 businessService.updateBusiness(b);
-                userService.updateIsBusiness(Integer.valueOf(userId), "2");
+                userService.updateIsBusiness(Integer.valueOf(userId), "1");//无后台管理界面，直接审核通过
                 Map<String, String> map = new HashMap<>();
                 map.put("id", b.getId() + "");
                 return new Response<>(HttpResponse.SUCCESS, "成功", map);
@@ -70,7 +70,7 @@ public class S0035 {
                 business.setbPhone(bPhone);
                 business.setbContent(bContent);
                 businessService.insertBusiness(business);
-                userService.updateIsBusiness(Integer.valueOf(userId), "2");
+                userService.updateIsBusiness(Integer.valueOf(userId), "1");//无后台管理界面，直接审核通过
                 Map<String, String> map = new HashMap<>();
                 map.put("id", business.getId() + "");
                 return new Response<>(HttpResponse.SUCCESS, "成功", map);
