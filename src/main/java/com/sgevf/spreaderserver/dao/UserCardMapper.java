@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface UserCardMapper {
-    @Insert("insert into user_card(card_id,user_id,get_time,end_time) values(#{cardId},#{userId},#{getTime},#{endTime},#{redPacketId})")
+    @Insert("insert into user_card(card_id,user_id,get_time,end_time,red_packet_id) values(#{cardId},#{userId},#{getTime},#{endTime},#{redPacketId})")
     int insertUserCards(@Param("cardId") int cardId, @Param("userId") int userId, @Param("getTime") String getTime, @Param("endTime") String endTime, @Param("redPacketId") int redPacketId);
 
     @Select("select * from user_card where user_id=#{userId}")
