@@ -1,5 +1,6 @@
 package com.sgevf.spreaderserver.dao;
 
+import com.sgevf.spreaderserver.dto.HistoryStatisicListDto;
 import com.sgevf.spreaderserver.entity.RedPacketHistory;
 import org.apache.ibatis.annotations.*;
 
@@ -29,4 +30,12 @@ public interface RedPacketHistoryMapper {
     @Insert("insert into red_packet_history(red_packet_id,robber_id,rob_money) values(#{redPacketId},#{robberId},#{robMoney})")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     int insertHistory(RedPacketHistory history);
+
+    @Select("select * from red_packet_history where red_packet_history.red_packet_id=#{redPacketId}")
+    @Results({
+            @Result(column = "rob_time",property = "time"),
+            @Result(column = "rob_money",property = "account"),
+            @Result(column = "robber_id",property = "id")
+    })
+    List<HistoryStatisicListDto> queryRedPacketList(@Param("redPacketId") int redPacketId);
 }

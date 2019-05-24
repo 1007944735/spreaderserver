@@ -1,9 +1,6 @@
 package com.sgevf.spreaderserver.service;
 
-import com.sgevf.spreaderserver.dto.HistoryReleaseDto;
-import com.sgevf.spreaderserver.dto.HomeAdvertisingListDto;
-import com.sgevf.spreaderserver.dto.RedPacketDetailsDto;
-import com.sgevf.spreaderserver.dto.RedPacketSearchDto;
+import com.sgevf.spreaderserver.dto.*;
 import com.sgevf.spreaderserver.entity.Expand;
 import com.sgevf.spreaderserver.entity.RedPacket;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,4 +19,6 @@ public interface PubService {
     List<HistoryReleaseDto> queryRedPacketByPuberId(Integer puberId,String type);
 
     List<HomeAdvertisingListDto> search();
+
+    List<HistoryStatisicListDto> searchStatistic(Integer redPacketId);
 }

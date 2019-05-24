@@ -274,6 +274,12 @@ public class PubServiceImpl implements PubService {
         return result;
     }
 
+    @Override
+    public List<HistoryStatisicListDto> searchStatistic(Integer redPacketId) {
+        List<HistoryStatisicListDto> list=redPacketHistoryMapper.queryRedPacketList(redPacketId);
+        return list;
+    }
+
     private List<RedPacketSearchDto> transform(List<RedPacket> redPackets, Point2D dot, boolean distance) {
         List<RedPacketSearchDto> result = new ArrayList<>();
         for (RedPacket redPacket : redPackets) {
